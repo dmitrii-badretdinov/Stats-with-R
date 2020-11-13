@@ -39,7 +39,7 @@ getwd()
 ?getwd
 
 ## c) Change your working directory to another directory.
-dir.create("~/R-course-files")
+ifelse(!dir.exists("~/R-course-files"), dir.create("~/R-course-files"), FALSE)
 setwd("~/R-course-files")
 
 
@@ -49,7 +49,8 @@ setwd("~/R-course-files")
 ## In this exercise, we will deal with data from a package.
 
 ## a) Install the package "languageR" and load it.
-
+install.packages("languageR")
+library("languageR")
 
 ## b) Specifically, we will deal with the dataset 'dutchSpeakersDistMeta'. 
 ##    This dataset should be available to you once you've loaded languageR.
