@@ -33,13 +33,14 @@
 ### Exercise 1: Getting started
 ###############
 ## a) Look at your current working directory.
-
+getwd()
 
 ## b) Get help with this function.
-
+?getwd
 
 ## c) Change your working directory to another directory.
-
+dir.create("~/R-course-files")
+setwd("~/R-course-files")
 
 
 ###############
