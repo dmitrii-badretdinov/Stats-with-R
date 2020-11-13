@@ -52,11 +52,6 @@ setwd("~/R-course-files")
 install.packages("languageR")
 library(languageR)
 
-## We'll also use the packages that were used in Datacamp exercises
-install.packages(c("dplyr", "ggplot2"))
-library(dplyr)
-library(ggplot2)
-
 ## b) Specifically, we will deal with the dataset 'dutchSpeakersDistMeta'. 
 ##    This dataset should be available to you once you've loaded languageR.
 ##    The dataset contains information on the speakers included in the Spoken 
