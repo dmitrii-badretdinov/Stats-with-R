@@ -70,25 +70,57 @@ nrow(dutchSpeakersDistMeta)
 ## d) Let's say we're interested in the age of the speakers included in the 
 ##    corpus, to see whether males and females are distributed equally. 
 ##    Create a boxplot for Sex and AgeYear.
-
-#boxplot(Sex~AgeYear, data=dutchSpeakersDistMeta)
+boxplot(AgeYear~Sex, data=dutchSpeakersDistMeta)
 
 ## e) Does it seem as if either of the two groups has more variability in age?
 
+##      According to the plot, the female group has more variability: 
+##      their minimum (Q1 - 1.5 interquartile range) goes lower than 1930 when
+##      the male group has only one outlier in this range.
+##      The maximum of the female group is also farther the the male one.
 
 ## f) Do you see any outliers in either of the two groups?
+
+##      There are two outliers in the male group on the lower side of the
+##      spectrum. According to the plot, the female group has no outliers.
 
 
 ## g) Now calculate the mean and standard deviation of the AgeYear per group. 
 ##    Do this by creating a subset for each group.
 ##    Do the groups seem to differ much in age?
 
+maleSubset <- subset(dutchSpeakersDistMeta, Sex == "male")
+femaleSubset <- subset(dutchSpeakersDistMeta, Sex == "female")
+(mean(maleSubset$AgeYear))
+(mean(femaleSubset$AgeYear))
+(sd(maleSubset$AgeYear))
+(sd(femaleSubset$AgeYear))
+
+##      If we were to consider only the mean and standard deviation,
+##      it could be said that the groups don't differ much in age.
+##      The difference in the mean is minuscule.
+##      The difference in the standard deviation is relatively larger, but
+##      still not enough to say that the groups differ in age noticeably.
 
 ## h) What do the whiskers of a boxplot mean?
 
+##      The whiskers are the range between the quartiles (Q1, Q3) and the
+##      minimum or maximum respectively. 
+##      Minimum being Q1 - 1.5 interquartile range, when maximum being
+##      Q1 + 1.5 interquartile range.
+
 ## i) What is the inter-quartile range in the boxplot?
 
+##      The inter-quartile range is the range between the first and third
+##      (Q1 and Q3) quartiles. That is, Q3 - Q1.
+
 ## j) Is the plot positively or negatively skewed?
+
+##      The plot being skewed means that most of its values are on one of the 
+##      tails of the distribution.
+##      Based on the boxplot, we can see that both male and female subsets are
+##      negatively skewed. That is, most of their values are on the left side
+##      from the mean.
 
 
 
