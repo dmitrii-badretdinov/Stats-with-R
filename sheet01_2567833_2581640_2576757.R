@@ -33,12 +33,15 @@
 ### Exercise 1: Getting started
 ###############
 ## a) Look at your current working directory.
+
 getwd()
 
 ## b) Get help with this function.
+
 ?getwd
 
 ## c) Change your working directory to another directory.
+
 ifelse(!dir.exists("~/R-course-files"), dir.create("~/R-course-files"), FALSE)
 setwd("~/R-course-files")
 
@@ -49,6 +52,7 @@ setwd("~/R-course-files")
 ## In this exercise, we will deal with data from a package.
 
 ## a) Install the package "languageR" and load it.
+
 install.packages("languageR")
 library(languageR)
 
@@ -57,6 +61,7 @@ library(languageR)
 ##    The dataset contains information on the speakers included in the Spoken 
 ##    Dutch Corpus. Inspect 'dutchSpeakersDistMeta'. Look at the head, tail, 
 ##    and summary. What do head and tail show you?
+
 data(dutchSpeakersDistMeta)
 head(dutchSpeakersDistMeta)
 tail(dutchSpeakersDistMeta)
@@ -65,11 +70,13 @@ summary(dutchSpeakersDistMeta)
 ## c) Each line in this file provides information on a single speaker. How many 
 ##    speakers are included in this dataset? In other words, use a function to 
 ##    retrieve the number of rows for this dataset.
+
 nrow(dutchSpeakersDistMeta)
 
 ## d) Let's say we're interested in the age of the speakers included in the 
 ##    corpus, to see whether males and females are distributed equally. 
 ##    Create a boxplot for Sex and AgeYear.
+
 boxplot(AgeYear~Sex, data=dutchSpeakersDistMeta)
 
 ## e) Does it seem as if either of the two groups has more variability in age?
