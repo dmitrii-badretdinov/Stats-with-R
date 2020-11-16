@@ -195,11 +195,8 @@ plot(d)
 ##    (hint: the area under the curve should be equal for overlaying the graphs 
 ##    correctly.)
 
-install.packages("ggplot2")                          
-library("ggplot2")
-ggplot(stories, aes(obs)) +                                
-  geom_histogram(aes(y = stat(density))) +
- geom_density(col = "red")
+hist(obs,prob=TRUE)
+lines(density(obs),col="blue")
 
 
 
