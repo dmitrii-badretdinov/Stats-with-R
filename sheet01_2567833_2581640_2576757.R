@@ -144,15 +144,15 @@ femaleSubset <- subset(dutchSpeakersDistMeta, Sex == "female")
 
 ## a) What measurement scale is this data? Is it discrete or continuous? Explain
 ##    in one sentence why? (remember, comment out written answers)
-ratio/discrete/because when we have the number of something it means it should be interval or ratio and because in this case 
-we can have the zero number it is ratio since in interval we cannot have zero. and ratio can be continuous and discrete. Here the scale is 
-discrete because between 16 and 17 we cannot have another number.
+#ratio/discrete/because when we have the number of something it means it should be interval or ratio and because in this case 
+#we can have the zero number it is ratio since in interval we cannot have zero. and ratio can be continuous and discrete. Here the scale is 
+#discrete because between 16 and 17 we cannot have another number.
 
 
 ## b) In the next questions (c-e), you will create a dataframe of this data, 
 ##    which will also include participant IDs.
 ##    Why is a dataframe better suited to store this data than a matrix?
-Because data in matrix should have the same data type. But columns in dataframe can have different data type like numeric,factor,character
+#Because data in matrix should have the same data type. But columns in dataframe can have different data type like numeric,factor,character
 
 
 ## c) First create a vector with participant IDs. Your vector should be named 
@@ -186,9 +186,9 @@ d <- density(obs)
 plot(d)
 
 ## j) What is the difference between a histogram and a kernel density plot?
-Density plot has advantage over histogram because in density plot, the plot does not affected by the number of bars.A histogram with 20 
-bars will produce a better distinguishable enough shape of distribution than a histogram with only 4 bars.Density plot does not affected 
-with this problem
+#Density plot has advantage over histogram because in density plot, the plot does not affected by the number of bars.A histogram with 20 
+#bars will produce a better distinguishable enough shape of distribution than a histogram with only 4 bars.Density plot does not affected 
+#with this problem
 ## This is a difficult one, remember you just need to provide a serious attempt at solving each 
 ## exercise in order to pass. 
 ## k) Overlay the histogram with the kernel density plot 
