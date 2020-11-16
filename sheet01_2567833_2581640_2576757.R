@@ -144,8 +144,9 @@ femaleSubset <- subset(dutchSpeakersDistMeta, Sex == "female")
 
 ## a) What measurement scale is this data? Is it discrete or continuous? Explain
 ##    in one sentence why? (remember, comment out written answers)
-# it is discrete ratio Because it is a numerical value that can be zero if a child does not use "and then" in telling stories.We know ratio values can either be continuous 
-#or discrete. In this example it is discrete because it is the count (number of times a child says "and then") 
+#It is a discrete ratio. 
+#It is a numerical value that can be zero if a child does not use "and then" in telling stories, 
+#and it's discrete because it's the count, which is the number of times a child says "and then". 
 
 
 ## b) In the next questions (c-e), you will create a dataframe of this data, 
