@@ -196,39 +196,58 @@ femaleSubset <- subset(dutchSpeakersDistMeta, Sex == "female")
 ##    (will become the x-axis in the plot).
 ##    Get R to generate the range from -5 to 5, by 0.1. Assign this to the 
 ##    variable x.
-
+x <- seq(-5, 5, by = 0.1)
 
 ## b) Now we need to obtain the y-values of the plot (the density). We do this 
 ##    using the density function for the normal distribution. 
 ##    Use "help(dnorm)" to find out about the standard functions for the normal 
 ##    distribution.
-
+y <- dnorm(x, mean = mean(x), sd = sd(x))
 
 ## c) Now use plot() to plot the normal distribution for z values of "x". 
-
+plot(x,y)
 
 ## d) The plot now has a relatively short y-range, and it contains circles 
 ##    instead of a line. 
 ##    Using plot(), specify the y axis to range from 0 to 0.8, and plot a line 
 ##    instead of the circles.
-
+plot(x,y, ylim=c(0,0.8), type = "l")
 
 ## e) We want to have a vertical line to represent the mean of our distribution.
 ##    'abline()' can do this for us. Look up help for abline(). 
 ##    Use abline() to create the vertical line. Specify the median of x using
 ##    the argument 'v'.
 ##    In order to get a dashed line, set the argument 'lty' to 2.
+#abline(v=c(mean(x),median(x)),lty = 2). 
+#The question also mentions mean and hence added the above code although mean ~ median=0
+abline(v=(median(x)),lty = 2)
 
 ## f) Take a look at the beaver1 dataset. (You can see it by typing "beaver1".) 
 ##    Then select only the temperature part and store it in a variable "b1temp".
+beaver1
+b1temp <- beaver1$temp
 
 ## g) Calculate the mean and standard deviation of this dataset and plot a normal
 ##    distribution with these parameters.
+b1_mean <- (mean(b1temp))
+b1_sd <- (sd(b1temp))
+temp_normal <- dnorm(b1temp, mean = b1_mean, sd = b1_sd)
+plot(b1temp, temp_normal)
 
 ## h) We observe two temparatures (36.91 and 38.13). What's the likelihood that
 ##    these temperatures (or more extreme ones) respectively come 
 ##    from the normal distribution from g)?
+1 -pnorm((36.91-b1_mean)/b1_sd)
+1 -pnorm((38.13-b1_mean)/b1_sd)
+#The probabilities are as obtained above. 
+#36.91 is more likely to come from normal distribution at around 40% while 38.13 is mostly not.
 
 ## i) Use the random sampling function in R to generate 20 random samples from
 ##    the normal distribution from g), and draw a histogram based on this sample.
 ##    Repeat 5 times. What do you observe?
+
+temp_random_sample = sample (temp_normal, size=20)
+hist(temp_random_sample)
+#The selection is random and hence it is not normally distributed anymore
+#Using any of the individual samples, the overall data distribution cannot be interpretted
+#and the samples selected each time varies hence the histogram varies accordingly
