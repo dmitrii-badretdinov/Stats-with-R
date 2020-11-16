@@ -265,5 +265,5 @@ plot(b1temp, temp_normal)
 temp_random_sample = sample (temp_normal, size=20)
 hist(temp_random_sample)
 #The selection is random and hence it is not normally distributed anymore
-#Using any of the individual samples, the overall data distribution cannot be interpretted
+#Using any of the individual samples, the overall data distribution cannot be interpreted
 #and the samples selected each time varies hence the histogram varies accordingly
