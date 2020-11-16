@@ -144,46 +144,62 @@ femaleSubset <- subset(dutchSpeakersDistMeta, Sex == "female")
 
 ## a) What measurement scale is this data? Is it discrete or continuous? Explain
 ##    in one sentence why? (remember, comment out written answers)
+ratio/discrete/because when we have the number of something it means it should be interval or ratio and because in this case 
+we can have the zero number it is ratio since in interval we cannot have zero. and ratio can be continuous and discrete. Here the scale is 
+discrete because between 16 and 17 we cannot have another number.
 
 
 ## b) In the next questions (c-e), you will create a dataframe of this data, 
 ##    which will also include participant IDs.
 ##    Why is a dataframe better suited to store this data than a matrix?
+Because data in matrix should have the same data type. But columns in dataframe can have different data type like numeric,factor,character
 
 
 ## c) First create a vector with participant IDs. Your vector should be named 
 ##    'pps', and your participants should be labeled from 1 to 25
-
+pps <- sprintf("User % d", 1:25)  
 
 ## d) Next, create a vector containing all the observations. Name this vector 'obs'.
-
+obs <- c(18,15,22,19,18,17,18,20,17,12,16,16,17,21,25,18,20,21,20,20,15,18,17,19,20) 
 
 ## e) Create a dataframe for this data. Assign this to 'stories'. 
-
+stories <- data.frame(pps,obs) 
 
 ## f) Take a look at the summary of your dataframe, and at the classes of your 
 ##    columns. What class is the variable 'pps'?
-
+stories
+summary(stories)
 
 ## g) Change the class of 'pps' to factor. Why is factor a better class for this
 ##    variable?
+as.factor((pps))
 
 
 ## h) Plot a histogram (using hist()) for these data. Set the number of breaks 
 ##    to 8.
+hist(obs, breaks=8, col="red")
 
 
 
 ## i) Create a kernel density plot using density().
-
+d <- density(obs) 
+plot(d)
 
 ## j) What is the difference between a histogram and a kernel density plot?
-
+ensity plot has advantage over histogram because in density plot, the plot does not affected by the number of bars.A histogram with 20 
+bars will produce a better distinguishable enough shape of distribution than a histogram with only 4 bars.Density plot does not affected 
+with this problem
 ## This is a difficult one, remember you just need to provide a serious attempt at solving each 
 ## exercise in order to pass. 
 ## k) Overlay the histogram with the kernel density plot 
 ##    (hint: the area under the curve should be equal for overlaying the graphs 
 ##    correctly.)
+
+install.packages("ggplot2")                          
+library("ggplot2")
+ggplot(stories, aes(obs)) +                                
+  geom_histogram(aes(y = stat(density))) +
+ geom_density(col = "red")
 
 
 
