@@ -186,7 +186,7 @@ d <- density(obs)
 plot(d)
 
 ## j) What is the difference between a histogram and a kernel density plot?
-ensity plot has advantage over histogram because in density plot, the plot does not affected by the number of bars.A histogram with 20 
+Density plot has advantage over histogram because in density plot, the plot does not affected by the number of bars.A histogram with 20 
 bars will produce a better distinguishable enough shape of distribution than a histogram with only 4 bars.Density plot does not affected 
 with this problem
 ## This is a difficult one, remember you just need to provide a serious attempt at solving each 
