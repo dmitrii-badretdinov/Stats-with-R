@@ -12,95 +12,223 @@
 
 # 1. Download the data file "digsym.csv" from the moodle and save it in your working directory. 
 
+## I hope the task doesn't require to download the file with a command from R
+##  as we would have to deal with authorization.
+##
+## Checking if the file is in the working directory:
+
+if(!file.exists("digsym.csv"))
+  print("The file digsym.csv is missing.")
+
 
 # 2. Read in the data into a variable called "dat".
+
+dat <- read.csv(file = "digsym.csv")
 
 
 # 3. Load the libraries languageR, stringr, dplyr and tidyr.
 
+## Installing packages only if missing.
+## I was unable to suppress the warning messages coming from require() 
+##  by wrapping it in suppressMessages().
+##  Therefore, I had to disable warnings globally during the installation.
+
+package_list <- c("languageR", "dplyr", "tidyr", "stringr")
+warn_level <- getOption("warn")
+options(warn = -1)
+
+for (val in package_list)
+{
+  if(!require(val, character.only = TRUE))
+  {
+    install.packages(val)
+    library(val, character.only = TRUE)
+  }
+}
+
+options(warn = warn_level)
+
 
 # 4. How many rows, how many columns does that data have?
+
+nrow(dat)
+ncol(dat)
+
+## The data has 3700 rows and 11 columns.
 
 
 # 5. Take a look at the structure of the data frame using "glimpse".
 
+glimpse(dat)
+
 
 # 6. View the first 20 rows, view the last 20 rows.
+
+head(dat, n = 20)
+tail(dat, n = 20)
 
 
 # 7. Is there any missing data in any of the columns?
 
+## Yes, there is missing data.
+## In what head() has shown, the first ten observations don't have information
+##  in the columns StimulDS1.*
+
 
 # 8. Get rid of the row number column.
+
+dat <- dat %>% select(-X)
 
 
 # 9. Put the Sub_Age column second.
 
+dat <- dat[,c(1,10,2:9)]
+
 
 # 10. Replace the values of the "ExperimentName" column with something shorter, more legible.
+
+## The column has only one unique value. Therefore, it's problematic to 
+##  figure out what this column is about.
+
+unique(dat$ExperimentName)
+
+colnames(dat)[1] <- "Study_Name"
 
 
 # 11. Keep only experimental trials (encoded as "Trial:2" in List), get rid of practice trials 
 # (encoded as "Trial:1"). When you do this, assign the subset of the data to a variable "data2", 
 # then assign data2 to dat and finally remove data2.
 
+data2 <- filter(dat, List == "Trial:2")
+dat <- data2
+rm(data2)
+
 
 # 12. Separate Sub_Age column to two columns, "Subject" and "Age", using the function "separate".
 
+dat <- separate(dat, Sub_Age, c("Subject", "Age"))
+
 
 # 13. Make subject a factor.
+
+dat$Subject <- as.factor(dat$Subject)
 
 
 # 14. Extract experimental condition ("right" vs. "wrong") from the "File" column:
 # i.e. we want to get rid of digit underscore before and the digit after the "right" and "wrong".
 
+dat <- mutate(dat, Right_or_wrong = 
+        ifelse(grepl("right", File), "right",
+                ifelse(grepl("wrong", File), "wrong", "NA")
+               )
+      )
 
 
 # 15. Using str_pad to make values in the File column 8 chars long, by putting 0 at the end  (i.e., 
 # same number of characters, such that "1_right" should be replaced by "1_right0" etc).
 
+str_pad(dat$File, 8, "right", pad = "0")
+
 
 # 16. Remove the column "List".
+
+dat <- select(dat, -List)
 
 
 # 17. Change the data type of "Age" to integer.
 
+dat$Age <- as.integer(dat$Age)
+
 
 # 18. Missing values, outliers:
 # Do we have any NAs in the data, and if so, how many and where are they?
+
+## The original dataset had NAs, but as we selected only Trial:2, there
+## are no NAs left.
+
+fresh_dat <- read.csv(file = "digsym.csv")
+
+for (val in names(fresh_dat))
+{
+  if(any(is.na(fresh_dat[val])))
+  {
+    print(val)
+  }
+}
+
+rm(fresh_dat)
+
+for (val in names(dat))
+{
+  if(any(is.na(dat[val])))
+  {
+    print(val)
+  }
+}
 
 
 # 19. Create an "accuracy" column using ifelse-statement.
 # If actual response (StimulDS1.RESP) is the same as the correct response (StimulDS1.CRESP), put 
 # in value 1, otherwise put 0.
 
+dat <- mutate(dat, Accuracy = ifelse(StimulDS1.RESP == StimulDS1.CRESP, 1, 0))
+
 
 # 20. How many wrong answers do we have in total?
+
+count_result <- count(dat, Accuracy)
+
+## We have 185 wrong answers, if we define "wrong" as Accurasy being 0.
 
 
 # 21. What's the percentage of wrong responses?
 
+mutate(count_result, ratio = n / sum(n))
+
+## The percentage of wrong responses is 5.6%
 
 
 # 22. Create a subset "correctResponses" that only contains those data points where subjects 
 # responded correctly. 
 
+correctResponses <- filter(dat, Accuracy == 1)
 
 
 # 23. Create a boxplot of StimulDS1.RT - any outliers?
 
+boxplot(correctResponses$StimulDS1.RT)
+
+## According to the boxplot, most of the results are located between 0 and 2500.
+## There are numerous outliers, one of which reaches above 12000.
+
 
 # 24. Create a histogram of StimulDS1.RT with bins set to 50.
+
+hist(correctResponses$StimulDS1.RT, breaks = 50)
 
 
 # 25. Describe the two plots - any tails? any suspiciously large values?
 
+## Both plots show a right tail, although the second plot clarifies that
+##  there are relatively few observations above 3000.
+## The distribution itself looks like a Power Lognormal distribution with
+##  p ~ 9.
+## However, even with this distribution, the values above 6000 are very rare.
+##  Therefore, the values above 6000 are suspicious.
+
 
 # 26. View summary of correct_RT.
+
+summary(correctResponses)
 
 
 # 27. There is a single very far outlier. Remove it and save the result in a new dataframe named 
 # "cleaned".
+
+## Based on summary() in the previous step, we know the exact value that we need to remove.
+
+cleaned <- filter(correctResponses, StimulDS1.RT < 13852)
+
 
 
 ###############
