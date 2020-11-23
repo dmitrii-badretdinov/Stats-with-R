@@ -239,6 +239,10 @@ cleaned <- filter(correctResponses, StimulDS1.RT < 13852)
 
 ## a) Load the package languageR. We're going to work with the dataset 'dative'. 
 ## Look at the help and summary for this dataset.
+#install.packages('languageR')
+library(languageR)
+summary(dative)
+?dative
 
 
 ## The term dative alternation is used to refer to the alternation between 
@@ -249,27 +253,41 @@ cleaned <- filter(correctResponses, StimulDS1.RT < 13852)
 
 ## b) Create a contingency table of 'LenghtOfTheme' using table(). 
 ##    What does this table show you?
-
+table(dative$LengthOfTheme)
+dative$LengthOfTheme
+# The table gives the frequency distribution of the 'LenghtOfTheme' variable.
 
 ## c) Look at the distribution of 'LenghtOfTheme' by plotting a histogram and a boxplot. 
 ##    Do there appear to be outliers? Is the data skewed?
+hist(dative$LengthOfTheme)
+#The data is positively skewed 
+boxplot(dative$LengthOfTheme)
+#There are outliers as there multiple data points located outside the whiskers of the box plot 
 
 
 ## d) Now we're going to derive sampling distributions of means for different 
 ##    sample sizes. 
 ##    What's the difference between a distribution and a sampling distribution?
+#Distribution is the general frequency and values from the entire data for that particular variable
+#Sampling distribution is the distribution across several samples. 
+#It includes statistics from repetition of survey for all possible samples of the population.
 
 
 ## e) We are going to need a random sample of the variable 'LengthOfTheme'. 
 ##    First create a random sample of 5 numbers using sample(). 
 ##    Assign the outcome to 'randomsampleoflengths'
+randomsampleoflengths <- sample(dative$LengthOfTheme, size = 5)
 
 
 ## f) Do this again, but assign the outcome to 'randomsampleoflengths2'. 
+randomsampleoflengths2 <- sample(dative$LengthOfTheme, size = 5)
 
 
 ## g) Now calculate the mean of both vectors, and combine these means 
 ##    into another vector called 'means5'.
+mean(randomsampleoflengths)
+mean(randomsampleoflengths2)
+means5 <- c(mean(randomsampleoflengths),mean(randomsampleoflengths2))
 
 
 ## h) In order to draw a distribution of such a sample, we want means of 
@@ -277,22 +295,43 @@ cleaned <- filter(correctResponses, StimulDS1.RT < 13852)
 ##    1000 times. We can do this in an easier way: 
 ##    by using a for-loop. See dataCamp or the course books for 
 ##    how to write loops in R.
+means5 <- vector()
+for ( i in 1:1000) {
+  randomsample<-sample(dative$LengthOfTheme, size = 5) 
+  # here random sample of 5 numbers is chosen
+  means5 <- append(means5, mean(randomsample))
+  # here the mean of the random sample is calculated and stored it the vector
+}
 
 
 ## i) Repeat the for-loop in question h, but use a sample size of 50. 
 ##    Assign this to 'means50' instead of 'means5'.
+means50  <- vector()
+for ( i in 1:1000) {
+  randomsample<-sample(dative$LengthOfTheme, size = 50) 
+  # here random sample of 50 numbers is chosen
+  means50 <- append(means50, mean(randomsample))
+}
 
 
 ## j) Explain in your own words what 'means5' and 'means50' now contain. 
 ##    How do they differ?
+#means5 and means50 contain the sampling distribution of the mean. 
+#lower sample size giving means5 and a higher, generally used sample size of 50 giving means50
 
 
 ## k) Look at the histograms for means5 and means50. Set the number of breaks to 15.
 ##    Does means5 have a positive or negative skew?
-
+hist(means5, breaks = 15)
+hist(means50, breaks = 15)
+#means5 has positive skew
+#while, means50 is almost normal
 
 ## l) What causes this skew? In other words, why does means5 have bigger 
 ##    maximum numbers than means50?
+#Very low sample size such as 5, can lead to bias in selection 
+#and the mean obtained is similar to individual frequency rather than general distribution.
+#Since the complete data frequency distribution is positively skewed, same trend is seen.
 
 
 ###############
