@@ -344,11 +344,13 @@ hist(means50, breaks = 15)
 ## Navarro discusses this in more depth in chapter 10.
 
 ## a) What does a confidence interval mean from the perspective of experiment replication?
-##Degree of certainty in our estimates,it also says how stable the estimate is
+# Confidence interval of the values X% at x and Y% at y means that
+# in (Y-X)% of replications, the confidence interval would reside within x and y.
 
 ## b) Let's calculate the confidence interval for our means from the previous 
 ##    exercise.
 ##    First, install and load the packages 'lsr' and 'sciplot'
+install.packages(c("lsr", "sciplot"))
 library(lsr)
 library(sciplot)
 
@@ -359,13 +361,14 @@ library(sciplot)
 ##    the previous exercise.
 ##    Also calculate the mean for the variable LengthOfTheme.
 ciMean(dative)
-conf.Lot<-ciMean(dative$LengthOfTheme)
+mean(dative$LengthOfTheme)
 
 ## e) Does the mean of the sample fall within the obtained interval? 
 ##    What does this mean?
-#YES
-# no:if mean does not conclude the interval, we say that particular value is not true population mean.But here YES:Yet 
-#we cannot conclude  that the population mean equals that specific value.
+# The mean is 4.27 when the upper bound is 4.42. The mean falls within the interval.
+# That means that if this dataset were the replication of the original study,
+# it would support the original theory of the study.
+
 
 ## f) As the description of dative mentions, the dataset describes the 
 ##    realization of the dative as NP or PP in two corpora.
@@ -375,14 +378,14 @@ conf.Lot<-ciMean(dative$LengthOfTheme)
 ##    animate (AnimacyOfTheme) and how long the theme is (LengthOfTheme).
 ##    Plot this using the function bargraph.CI(). Look at the help for this function. 
 ##    Use the arguments 'x.factor' and 'response'.
-bargraph.CI(x.factor=conf.Lot$LengthOfTheme ,response=,conf.Lot$AnimacyofTheme, data=data)
-
+bargraph.CI(x.factor = dative$AnimacyOfTheme, response = dative$LengthOfTheme)
 
 ## g) Expand the plot from question f with the ci.fun argument 
 ##    (this argument takes 'ciMean'). 
 ##    Why does the ci differ in this new plot compared to the previous plot?
-bargraph.CI(x.factor=conf.Lot$LengthOfTheme ,response=,conf.Lot$AnimacyofTheme, data=data,ci.fun = ciMean)
-###because ci.fun returns a vector of length 2 defining the lower and upper limit of CI. Defaults to the mean +/- standard error with NA values 
-#removed.
+bargraph.CI(x.factor = dative$AnimacyOfTheme, response = dative$LengthOfTheme, ci.fun = ciMean)
 
-
+# From the description of the bargraph funcion, we can see that the confidence
+# interval by default is calculated by taking the mean of the dataset and 
+# enlarging it on both sides with the standard error.
+# The resulting interval is much smaller than the output of ciMean().
