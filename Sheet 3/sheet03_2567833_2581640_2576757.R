@@ -46,11 +46,24 @@
 
 ## a) First install and load the ggplot2 package. Look at the help for ggplot.
 
+if(!require(ggplot2))
+{
+  install.packages(ggplot2)
+  library(ggplot2)
+}
+?ggplot
 
 ## b) We're going to be plotting data from the dataframe 'ratings' 
 ##    (included in languageR). 
 ##    Look at the description of the dataset and the summary.
 
+if(!require(languageR))
+{
+  install.packages(languageR)
+  library(languageR)
+}
+?ratings
+summary(ratings)
 
 ## For each word, we have three ratings (averaged over subjects), one for the 
 ## weight of the word's referent, one for its size, and one for the words' 
