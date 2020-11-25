@@ -85,7 +85,12 @@ summary(ratings)
 ##    Plot a barplot of ratings.2 using ggplot. Map the two classes to two 
 ##    different colours. 
 ##    Remove the legend.
-
+summary(ratings)
+condition <- c("animal", "plant")
+frequency <- c(mean(subset(ratings, Class == "animal")$Frequency), mean(subset(ratings, Class == "plant")$Frequency))
+length <- c(mean(subset(ratings, Class == "animal")$Length), mean(subset(ratings, Class == "plant")$Length))
+ratings.2 <- data.frame(condition, frequency, length)
+ratings.2
 
 
 ## d) Let's assume that we have additional data on the ratings of words. 
@@ -96,7 +101,14 @@ summary(ratings)
 ##    the frequency of the animals and plants and their occurrence.
 ##    Map occurrence to different point shapes and increase the size 
 ##    of these point shapes.
-
+condition <- c("animal", "plant")
+frequency <- c(7.4328978, 3.5864538)
+length <- c(5.15678625, 7.81536584)
+ratings.add <- data.frame(condition, frequency, length)
+ratings.3 <- rbind(ratings.2, ratings.add)
+occurrence <- c("common", "common", "exotic", "exotic")
+ratings.3 <- cbind(ratings.3, occurrence)
+ratings.3
 
 ## e) Based on the graph you produced in question d, 
 ##    what can you conclude about how frequently 
