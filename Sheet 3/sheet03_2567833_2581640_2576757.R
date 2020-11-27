@@ -136,16 +136,31 @@ ratings.3
 ##    Load the package (languageR) and look at the summary of the variables, 
 ##    as well as their classes. Which variables are factors?
 
+require(languageR)
+data.frame(dutchSpeakersDistMeta)
+str(dutchSpeakersDistMeta)
+
+# Factors: Speaker, Sex, AgeGroup, ConversationType, EduLevel.
+
 ## b) We want to find out whether there is a difference between males and females 
 ##    with respect to the age groups they are in.
 ##	  First use the function 'table()' to get the counts and create 
 ##    a contingency table of AgeGroup by Sex.
 
+contigency_table <- table(dutchSpeakersDistMeta$AgeGroup, dutchSpeakersDistMeta$Sex)
+
 ##    Visualize your data with a single bar plot (use ggplot) that represents the counts with 
 ##    respect to each age group and each sex.
 
+require(ggplot2)
+ggplot(dutchSpeakersDistMeta, aes(x = AgeGroup, fill = Sex)) + geom_bar()
+
 ## c) Inspect the table you created in b). Does it look like there could be a significant 
 ##    difference between the sexes?
+
+# Yes, it looks like there could be a significant difference between the sexes.
+# For example, it's visually visible that in the ages 18-24, 45-55, and 55+
+# the percentage of females is noticeably more than a half.
 
 ## d) We are going to calculate whether there's a difference between males and females 
 ##    regarding their age group using the function chisq.test. 
@@ -153,7 +168,17 @@ ratings.3
 ##    Then use the  function to calculate whether there's a difference in our table from b). 
 ##    Is there a significant difference in age group?
 
+?chisq.test
+chisq.test(contigency_table)
+
+# The resulting p-value is more than 0.05. It means that there is indeed a
+# significant difference in age group.
+
 ## e) What are the degrees of freedom for our data? How are they derived?
+
+# Usually the degrees of freedom are calculated by (nrow - 1) * (ncol - 1),
+# or, as said in the lecture, number of the categories minus one. 
+# df = (2-1) * (5-1) = 4
 
 
 ##########
