@@ -125,11 +125,12 @@ ggplot(ratings.3,aes(x=factor(occurrence),y=frequency,color=condition,group=cond
 
 ## a) Please calculate the probability of getting exactly 5 answers right 
 ##    if you answer by chance. Calculate this using the dbinom() function.
-
+dbinom(5, size=12, prob=0.25)
 
 ## b) Next please calculate the probability of answering 4 or less questions 
 ##    correctly by chance. 
-dbinom(4, size=12, prob=0.25)
+sum(dbinom(x=1:4, size=12, prob=0.25))
+
 
 
 ##########
