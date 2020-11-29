@@ -109,12 +109,14 @@ ratings.3 <- rbind(ratings.2, ratings.add)
 occurrence <- c("common", "common", "exotic", "exotic")
 ratings.3 <- cbind(ratings.3, occurrence)
 ratings.3
+ggplot(ratings.3,aes(x=factor(occurrence),y=frequency,color=condition,group=condition))+geom_line()
 
 ## e) Based on the graph you produced in question d, 
 ##    what can you conclude about how frequently 
 ##    people talk about plants versus animals, 
 ##    with regards to how common they are?
-
+##if they are common as well as plants it will decrease by occurence from common to exotic, 
+#but if they are common as well as animal, the frequency will increase by occurence.
 ##########
 ##Exercise 2. Binomial distribution
 ##########
