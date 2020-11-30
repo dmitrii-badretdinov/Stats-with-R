@@ -232,3 +232,22 @@ pbinom(100, 200, 0.5, lower.tail=FALSE)
 ## What would be the problem of using the normal ChiSquare test in a case where 
 ## McNemar's test would be more appropriate?
 
+# According to the Lecture 4, ChiSquare test has two main limitations of its usage:
+# 1. The resulting percentages should not be too small; 
+# 2. The observations should be independent;
+#
+# The McNemar's test was given as the solution to the second case, that is when
+# the observations are not independent.
+# Several examples were given to show how the variables can be dependent on
+# each other.
+#
+# It also is worthy of note that McNemar's test can be used only for two 
+# variables.
+#
+# For example, McNemar's test would be more suitable than the ChiSquare test
+# in the situation where the researches study the sleep schedule of the volunteers
+# before and after they were informed why the inconsistent schedule is bad.
+#
+# The problem of using ChiSquare in this case would be that one of the assumptions
+# (independent variables) is not followed, so the ChiSquare test would give
+# the values that would be farther from truth than McNemar's test.
