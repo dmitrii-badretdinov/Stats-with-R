@@ -197,14 +197,32 @@ chisq.test(contigency_table)
 
 ## a) What is the null hypothesis, i.e. how often would we expect the doctor to 
 ##    be correct by chance (in raw number and in percentage)?
+#Null hypothesis: Doctors cannot predict if the patient has fever by just holding their hand
+#At chance level, p = 1/2 = 0.5, as there are 2 possible outcomes: having fever or not
 
 ## b) Using a chisquare test, what do you conclude about whether this idea
-##    of checking fever/temperature works? 
+##    of checking fever/temperature works?
+# p value here is given by 83(correctly predicted) / 200(number of trials)
+# The chisq value is calculated as: E = 0.5*200 = 100
+# O = 83
+# chisq = (83-100)^2 / 100 + (117-100)^2 / 100 = 5.78
+pchisq(5.78, df = 1, lower.tail=FALSE)
+pchisq(5.78, df = 1)
+# The p-values is 0.01620954, which is lower than 0.05
+# it statistically significant and hence rejects null hypothesis
+# This shows that checking temperature physically to test for fever is not by chance
 
 ## c) Now calculate significance using the binomial test as we used it in exercise 2.
+pbinom(83, 200, 0.5, lower.tail=FALSE)
+pbinom(100, 200, 0.5, lower.tail=FALSE)
+# The value is 0.9903015, showing that the null hypothesis is true 
+# and hence the prediction could actually be by chance
 
 ## d) The results from these two tests are slightly different. Which test do you think 
 ##    is better for our data, and why?
+# Binomial test seems to be better for the given data as we are comparing to a fixed probability
+# The chisquare test is an approximation and the data does not clearly mention how many are wrongly predicted 
+# The observations might not be independent of one another as multiple tests could be from one doctor
 
 
 ##########
