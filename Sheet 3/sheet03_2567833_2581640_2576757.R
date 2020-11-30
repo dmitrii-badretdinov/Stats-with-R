@@ -91,7 +91,7 @@ frequency <- c(mean(subset(ratings, Class == "animal")$Frequency), mean(subset(r
 length <- c(mean(subset(ratings, Class == "animal")$Length), mean(subset(ratings, Class == "plant")$Length))
 ratings.2 <- data.frame(condition, frequency, length)
 ratings.2
-ggplot(ratings.2,aes(x=factor(condition),color=condition))+geom_bar(position="dodge")
+ggplot(ratings.2,aes(y=length,x=frequency,color=condition))+geom_bar(stat="identity",fill="white")
 
 ## d) Let's assume that we have additional data on the ratings of words. 
 ##    This data divides the conditions up into exotic and common animals 
