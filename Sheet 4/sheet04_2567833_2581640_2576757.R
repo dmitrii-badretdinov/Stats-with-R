@@ -12,8 +12,12 @@
 ## You are required to work together in groups of three students but only one student needs to submit the solution!
 
 ## Please write below your (and your teammates') name, matriculation number. 
-## Name:
-## Matriculation number:
+## Name: Farzaneh Khojasteh
+## Matriculation number: 2567833
+## Name: Meghana Srinath
+## Matriculation number: 2581640
+## Name: Dmitrii Badretdinov
+## Matriculation number: 2576757
 
 ## Change the name of the file by adding your matriculation numbers
 ## (exercise0N_firstID_secondID_thirdID.R)
@@ -32,12 +36,16 @@ library(effsize)
 # 1. Download the data file "digsym_clean.csv" from the moodle and save it in your 
 # working directory. 
 
+if(!file.exists("digsym_clean.csv"))
+  print("The file digsym_clean.csv is missing.")
 
 # 2. Read in the data into a variable called "data".
 
+data <- read.csv(file = "digsym_clean.csv")
 
 # 3. Get rid of the column "X"
 
+data <- data[, setdiff(names(data), c("X"))]
 
 # Say you're interested in whether people respond with different accuracy to 
 # right vs. wrong picture-symbol combinations.
@@ -88,6 +96,7 @@ summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE, conf.i
 
 # 4. Apply the function summarySE on the accuracy data grouping by right/wrong condition
 # (use the provided documentation inside the function above for the arguments description).
+
 
 
 # 5. Create the barplot (use ggplot2 for this and all tasks below) with error bars 
