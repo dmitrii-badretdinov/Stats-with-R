@@ -90,9 +90,9 @@ dat <- dat[,c(1,10,2:9)]
 ## The column has only one unique value. Therefore, it's problematic to 
 ##  figure out what this column is about.
 
-unique(dat$ExperimentName)
+unique(dat$ExperimentName) 
 
-colnames(dat)[1] <- "Study_Name"
+dat$ExperimentName <- "Copy"
 
 
 # 11. Keep only experimental trials (encoded as "Trial:2" in List), get rid of practice trials 
@@ -178,7 +178,7 @@ dat <- mutate(dat, Accuracy = ifelse(StimulDS1.RESP == StimulDS1.CRESP, 1, 0))
 
 count_result <- count(dat, Accuracy)
 
-## We have 185 wrong answers, if we define "wrong" as Accurasy being 0.
+## We have 185 wrong answers, if we define "wrong" as Accuracy being 0.
 
 
 # 21. What's the percentage of wrong responses?
