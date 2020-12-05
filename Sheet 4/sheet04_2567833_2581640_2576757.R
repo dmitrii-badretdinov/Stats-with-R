@@ -123,11 +123,14 @@ data2 <- summarySE(data, "accuracy", groupvars = c("condition"))
 # Gauging from the plot, does it look like there's a huge difference in accuracy 
 # for responses to the right and wrong condition?
 
+warn_level <- getOption("warn")
+options(warn = -1)
 if(!require(ggplot2))
 {
   install.packages("ggplot2")
   library(ggplot2)
 }
+options(warn = warn_level)
 
 ggplot(data2, aes(x = condition, y = se)) + geom_bar(stat = "identity")
 
@@ -157,6 +160,17 @@ ggplot(data2, aes(x = condition, y = se)) + geom_bar(stat = "identity")
 ## Check ?cast or https://www.statmethods.net/management/reshape.html for more infos on 
 ## cast(). 
 
+# Using library "reshape" since it's contains cast()
+warn_level <- getOption("warn")
+options(warn = -1)
+if(!require(reshape))
+{
+  install.packages("reshape")
+  library(reshape)
+}
+options(warn = warn_level)
+
+cdata <- cast(data, Subject+condition~., fun.aggregate = mean, value = "accuracy", na.rm = T)
 
 # 8. Create histograms of the accuracy data depending on the right and wrong 
 # condition and display them side by side.
