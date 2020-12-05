@@ -141,6 +141,12 @@ ggplot(data2, aes(x = condition, y = se)) + geom_bar(stat = "identity")
 # Why can't you compute a t-test on the data as they are now? 
 # Hint: Which assumption is violated?
 
+# The assumptions of the t-test are:
+#  1. Normal distribution of the population.
+#  2. Observations in the data are independent.
+#
+# We cannot compute the t-test because the data currently violates the second
+#  assumption: the average accuracy for right and wrong is related.
 
 # 7. We need to reshape the data to only one observation (average accuracy) per subject 
 # and right/wrong condition. Here we will use cast() which we discussed in the tutorial
