@@ -52,13 +52,16 @@ options(warn = warn_level)
 if(!file.exists("digsym_clean.csv"))
   print("The file digsym_clean.csv is missing.")
 
+
 # 2. Read in the data into a variable called "data".
 
 data <- read.csv(file = "digsym_clean.csv")
 
+
 # 3. Get rid of the column "X"
 
 data <- data[, setdiff(names(data), c("X"))]
+
 
 # Say you're interested in whether people respond with different accuracy to 
 # right vs. wrong picture-symbol combinations.
@@ -118,6 +121,7 @@ summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE, conf.i
 
 data2 <- summarySE(data, "accuracy", groupvars = c("condition"))
 
+
 # 5. Create the barplot (use ggplot2 for this and all tasks below) with error bars 
 # (which the function summarySE readily provided).
 # Gauging from the plot, does it look like there's a huge difference in accuracy 
@@ -137,6 +141,7 @@ ggplot(data2, aes(x = condition, y = se)) + geom_bar(stat = "identity")
 # Based on the graph of standard error, I wouldn't say that there is a huge
 #  difference in accuracy. The difference is less than 30%.
 
+
 # 6. Let's go back to our data frame "data", which is still loaded in your console
 # Now that you've taken a look at the data, you want to get into the stats.
 # You want to compute a t-test for the average accuracy data in the right and 
@@ -150,6 +155,7 @@ ggplot(data2, aes(x = condition, y = se)) + geom_bar(stat = "identity")
 #
 # We cannot compute the t-test because the data currently violates the second
 #  assumption: the average accuracy for right and wrong is related.
+
 
 # 7. We need to reshape the data to only one observation (average accuracy) per subject 
 # and right/wrong condition. Here we will use cast() which we discussed in the tutorial
@@ -172,23 +178,38 @@ options(warn = warn_level)
 
 cdata <- cast(data, Subject+condition~., fun.aggregate = mean, value = "accuracy", na.rm = T)
 
+
 # 8. Create histograms of the accuracy data depending on the right and wrong 
 # condition and display them side by side.
+
+ggplot(cdata, aes(cdata$'(all)', fill = condition)) + geom_histogram(binwidth = 0.03, position = "dodge")
 
 
 # 9. Display the same data in density plots. 
 
+ggplot(cdata, aes(cdata$'(all)', fill = condition)) + geom_density(position = "dodge", alpha = 0.4)
+
 
 # 10. Based on the histograms and the density plots - are these data normally 
-# distibuted?
+# distributed?
+
+# Based on the density plot, the data is normally distributed, although only roughly.
 
 
 # 11. Create boxplots of the accuracy data.
+
+ggplot(cdata, aes(y = cdata$'(all)', fill = condition)) + geom_boxplot()
 
 
 # 12. Compute the t-test to compare the mean accuracy between wrong and right picture
 # combinations.
 # Do you need a paired t-test or independent sample t-test? why?
+
+# We need an independent t-test because the samples are significantly different.
+
+t.test(cdata$`(all)`~cdata$condition, paired = F, var.equal = F)
+
+# The test has shown that there's a significant difference between the means of two groups.
 
 
 # 13. What does the output tell you? What conclusions do you draw?
