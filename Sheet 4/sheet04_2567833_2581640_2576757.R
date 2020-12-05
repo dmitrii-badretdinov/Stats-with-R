@@ -129,7 +129,10 @@ if(!require(ggplot2))
   library(ggplot2)
 }
 
+ggplot(data2, aes(x = condition, y = se)) + geom_bar(stat = "identity")
 
+# Based on the graph of standard error, I wouldn't say that there is a huge
+#  difference in accuracy. The difference is less than 30%.
 
 # 6. Let's go back to our data frame "data", which is still loaded in your console
 # Now that you've taken a look at the data, you want to get into the stats.
