@@ -29,9 +29,22 @@
 ### Cleaning Data
 ###############
 
-library(lsr)
-library(tidyr)
-library(effsize)
+# We changed the loading of packages so they are downloaded if absent.
+
+package_list <- c("lsr", "tidyr", "effsize")
+warn_level <- getOption("warn")
+options(warn = -1)
+
+for (val in package_list)
+{
+  if(!require(val, character.only = TRUE))
+  {
+    install.packages(val)
+    library(val, character.only = TRUE)
+  }
+}
+
+options(warn = warn_level)
 
 # 1. Download the data file "digsym_clean.csv" from the moodle and save it in your 
 # working directory. 
@@ -66,7 +79,13 @@ summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE, conf.i
   #            on <measurevar>.
   # na.rm: should we remove NA
   # conf.interval: confidence interval
-  library(doBy)
+  
+# Again, we had to modify the loading sequence.
+  if(!require(doBy))
+  {
+    install.packages("doBy")
+    library(doBy)
+  }
   
   length2 <- function (x, na.rm=FALSE) {
     if (na.rm) sum(!is.na(x))
@@ -97,12 +116,19 @@ summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE, conf.i
 # 4. Apply the function summarySE on the accuracy data grouping by right/wrong condition
 # (use the provided documentation inside the function above for the arguments description).
 
-
+data2 <- summarySE(data, "accuracy", groupvars = c("condition"))
 
 # 5. Create the barplot (use ggplot2 for this and all tasks below) with error bars 
 # (which the function summarySE readily provided).
 # Gauging from the plot, does it look like there's a huge difference in accuracy 
 # for responses to the right and wrong condition?
+
+if(!require(ggplot2))
+{
+  install.packages("ggplot2")
+  library(ggplot2)
+}
+
 
 
 # 6. Let's go back to our data frame "data", which is still loaded in your console
