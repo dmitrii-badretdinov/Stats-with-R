@@ -228,7 +228,7 @@ x <- cohensD(cdata$`(all)` ~ cdata$condition, method="paired")
 # Let's do a transformation of our data set (cdata) to see what it would look like in a wide 
 # format.
 # Use spread() from the tidyr package.
-wide_data <- spread_(data = cdata, key_col= 'condition', value_col = '(all)')
+wide_data <- spread(cdata, 'condition', '(all)')
 
 # 17. Compute the t-test again on the wide format data - note that for wide-format 
 # data you need to use a different annotation for the t-test.
