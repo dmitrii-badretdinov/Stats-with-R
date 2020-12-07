@@ -215,11 +215,12 @@ t.test(cdata$`(all)`~cdata$condition, paired = F, var.equal = F)
 # 13. What does the output tell you? What conclusions do you draw?
 
 
-# 14. Compute the effect size using CohensD.
 
+# 14. Compute the effect size using CohensD.
+x <- cohensD(cdata$`(all)` ~ cdata$condition, method="paired")
 
 # 15. Which effect size do we get? How do you interpret this result?
-
+#0.6196291
 
 # 16. In addition to the long-format data we've just been working on, you may also 
 # encounter data sets in a wide format (this is the format we have been using in 
@@ -227,11 +228,12 @@ t.test(cdata$`(all)`~cdata$condition, paired = F, var.equal = F)
 # Let's do a transformation of our data set (cdata) to see what it would look like in a wide 
 # format.
 # Use spread() from the tidyr package.
+spread_dat <- spread(cdata, key = cdata$condition, value = cdata$`(all)`)
 
 
 # 17. Compute the t-test again on the wide format data - note that for wide-format 
 # data you need to use a different annotation for the t-test.
-
+# data you need to use a different annotation for the t-test.
 
 # 18. Compare the t-test results from the wide-format and the long-format data. 
 # What do you notice?
@@ -249,15 +251,16 @@ t.test(cdata$`(all)`~cdata$condition, paired = F, var.equal = F)
 # Collapse the original data, using 
 # cast(data, var1 + var2 + var3 ... ~ ., function, value = var4, na.rm = T).
 # Store the result in a new variable called "cdat"
+cdat <- cast(data, StimulDS1.CRESP + Gender ~., fun.aggregate = mean, value = "correct_RT", na.rm = T)
 
 
 # 21. Take a look at cdat using head().
-
+head(cdat)
 
 # 22. Compute the t-test to compare the accuracy means of female and male 
 # participants.
 # Which t-test do you need and why? How do you interpret the result?
-
+t.test(cdat$`(all)` ~ cdat$Gender)
 
 ###############
 ### T-Test
