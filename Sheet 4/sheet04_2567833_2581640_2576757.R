@@ -213,7 +213,7 @@ t.test(cdata$`(all)`~cdata$condition, paired = F, var.equal = F)
 
 
 # 13. What does the output tell you? What conclusions do you draw?
-
+# The output and the p-value vary widely; The previous assumption does not hold
 
 
 # 14. Compute the effect size using CohensD.
