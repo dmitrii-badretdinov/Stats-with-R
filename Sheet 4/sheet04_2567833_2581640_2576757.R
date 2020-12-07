@@ -209,11 +209,9 @@ ggplot(cdata, aes(y = cdata$'(all)', fill = condition)) + geom_boxplot()
 
 t.test(cdata$`(all)`~cdata$condition, paired = F, var.equal = F)
 
-# The test has shown that there's a significant difference between the means of two groups.
-
 
 # 13. What does the output tell you? What conclusions do you draw?
-# The output and the p-value vary widely; The previous assumption does not hold
+#The test has shown that there's a significant difference between the means of two groups.
 
 
 # 14. Compute the effect size using CohensD.
@@ -221,6 +219,7 @@ x <- cohensD(cdata$`(all)` ~ cdata$condition, method="paired")
 
 # 15. Which effect size do we get? How do you interpret this result?
 #0.6196291
+
 
 # 16. In addition to the long-format data we've just been working on, you may also 
 # encounter data sets in a wide format (this is the format we have been using in 
@@ -233,12 +232,13 @@ spread_dat <- spread(cdata, key = cdata$condition, value = cdata$`(all)`)
 
 # 17. Compute the t-test again on the wide format data - note that for wide-format 
 # data you need to use a different annotation for the t-test.
-# data you need to use a different annotation for the t-test.
 t.test(spreaddata,c(accuracy,condition))
+
 
 # 18. Compare the t-test results from the wide-format and the long-format data. 
 # What do you notice?
 #The t-test value for the wide-format is larger than the long format.
+
 
 # 19. Compute CohensD on the wide format data. What do you notice?
 
@@ -257,6 +257,7 @@ cdat <- cast(data, StimulDS1.CRESP + Gender ~., fun.aggregate = mean, value = "c
 
 # 21. Take a look at cdat using head().
 head(cdat)
+
 
 # 22. Compute the t-test to compare the accuracy means of female and male 
 # participants.
