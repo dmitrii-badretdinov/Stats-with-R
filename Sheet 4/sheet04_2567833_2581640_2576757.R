@@ -221,27 +221,25 @@ x <- cohensD(cdata$`(all)` ~ cdata$condition, method="paired")
 #0.6196291
 
 
+
 # 16. In addition to the long-format data we've just been working on, you may also 
 # encounter data sets in a wide format (this is the format we have been using in 
 # class examples.)
 # Let's do a transformation of our data set (cdata) to see what it would look like in a wide 
 # format.
 # Use spread() from the tidyr package.
-spread_dat <- spread(cdata, key = cdata$condition, value = cdata$`(all)`)
-
+wide_data <- spread_(data = cdata, key_col= 'condition', value_col = '(all)')
 
 # 17. Compute the t-test again on the wide format data - note that for wide-format 
 # data you need to use a different annotation for the t-test.
-t.test(spreaddata,c(accuracy,condition))
-
+t.test(wide_data$right,wide_data$wrong, method="paired")
 
 # 18. Compare the t-test results from the wide-format and the long-format data. 
 # What do you notice?
 #The t-test value for the wide-format is larger than the long format.
 
-
 # 19. Compute CohensD on the wide format data. What do you notice?
-
+cohensD(wide_data$right,wide_data$wrong, method="paired")
 
 
 # 20. Let's try the t-test again, but for a different question:
