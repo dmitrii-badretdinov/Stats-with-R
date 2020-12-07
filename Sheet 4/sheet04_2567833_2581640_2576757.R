@@ -271,16 +271,17 @@ t.test(cdat$`(all)` ~ cdat$Gender)
 #comparing the performance of the students in the final exam by tutor group. 
 
 #1. Generate 10 samples from a normal distribution with mean 0 and sd 10 and save it a variable names "first_tutor_grades"
-
+first_tutor_grades <- rnorm(20, mean=0, sd=10)
+#mean(first_tutor_grades)
 
 #2. Create a vector named "first_tutor" having same 10 values -> "tutor1"
-
+first_tutor <- rep("tutor1",times = 10)
 
 #3. Create a data frame named "data_frame" having 2 columns "first_tutor", "first_tutor_grades" created above. 
-
+data_frame <- data.frame(first_tutor,first_tutor_grades)
 
 #4. Change the column names of the data frame to "tutor" and "score"
-
+colnames(data_frame) <- c("tutor","score")
 
 
 #5. repeat the steps 1-4 with the following changes:
@@ -288,7 +289,10 @@ t.test(cdat$`(all)` ~ cdat$Gender)
   #ii)Create a vector named "second_tutor" having 10 same values -> "tutor2"
   #iii) Create a data frame named "data_frame2" having 2 columns "second_tutor", "second_tutor_grades" created above.
   #iv) Change the column names of the data frame to "tutor" and "score"
- 
+second_tutor_grades <- rnorm(20, mean=10, sd=25)
+second_tutor <- rep("tutor2",times = 10)
+data_frame2 <- data.frame(second_tutor,second_tutor_grades)
+colnames(data_frame2) <- c("tutor","score")
 
 
 #6. combine both data frames into a new one and name it "final_df"
@@ -299,15 +303,40 @@ t.test(cdat$`(all)` ~ cdat$Gender)
 #3  tutor1     3.56
 #4  tutor2     1.56
 #5  tutor2     545
-
+final_df <- rbind(data_frame, data_frame2)
+final_df$tutor <- as.factor(final_df$tutor)
 
 #7. run the independent samples TTest (independentSamplesTTest) and formulate the findings as discussed in the lecture. 
 #	What do you observe? 
 #	independentSamplesTTest also provides the effect size (Cohen's d). How do you interpret the effect size?
-
+independentSamplesTTest(score ~ tutor, final_df, var.equal=TRUE)
+#An independent samples t-test on scores from tutor1(mean=-0.303) and tutor2(mean=10.961) shows that
+#the difference is not significant with t(18)=-1.493 and p=0.153 > 0.05(CI(95)=[-27.1,4.6],d=0.6)
+#the negative t-value does not impact the results but shows that tutor1 has lower scores than tutor2.
 
 #8. Time to play around!
 #	repeat the whole experiment you performed above with different sample size, mean and standard deviation  
 #	repeat it 3 times changing all the values (sample size, mean, sd) and formulate the findings.  
 #	what do you observe when we keep the means and sd same?
+
+# first_tutor_grades <- rnorm(5, mean=0, sd=10)
+# first_tutor <- rep("tutor1",times = 5)
+# data_frame <- data.frame(first_tutor,first_tutor_grades)
+# colnames(data_frame) <- c("tutor","score")
+# second_tutor_grades <- rnorm(5, mean=10, sd=25)
+# second_tutor <- rep("tutor2",times = 5)
+# data_frame2 <- data.frame(second_tutor,second_tutor_grades)
+# colnames(data_frame2) <- c("tutor","score")
+# final_df <- rbind(data_frame, data_frame2)
+# final_df$tutor <- as.factor(final_df$tutor)
+# independentSamplesTTest(score ~ tutor, final_df, var.equal=TRUE)
+
+#Repeating the experiment with same mean(0 and 10) and SD(10 and 25) to generate samples 
+#but changing the sample size (both to 20, only 1 to 20, one to 20 and other to 40),
+#the variances and means change in individual samples as they are chosen at random and 
+#if the experiment is repeated until (approximately) same mean(0 and 10) is obtained, 
+#t-statistic is around 2(2.43,2.29,2.1) and p values vary from 0.02,0.03 to 0.054. 
+#Hence, we observe with increase in sample size, t increases while p-value decreases.
+#to test, lower sample size of 5 was taken and t(8)=-0.864, p=0.413, which proves the above.
+
 
