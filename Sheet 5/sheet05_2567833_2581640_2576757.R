@@ -49,8 +49,12 @@ options(warn = warn_level)
 # The data set contains subjective frequency ratings and their length averaged over 
 # subjects, for 81 concrete English nouns.
 
+data <- languageR::ratings
+
 
 # b) Take a look at the data frame.
+
+str(data)
 
 
 # c) Let's say you're interested in whether there is a linear relationship between 
@@ -58,10 +62,22 @@ options(warn = warn_level)
 # Take a look at the relationship between the frequency and word length data by 
 # means of a scatterplot (use the ggplot library for this).
 
+if(!require(ggplot2))
+{
+  install.packages(ggplot2)
+  library(ggplot2)
+}
+
+ggplot(data, aes(Frequency, Length)) +
+  geom_point()
 
 
 # d) Judging from the graphs, do you think that word frequency and word length are 
 # in any way correlated with one another?
+
+## A wide trend could be seen on the scatterplot.
+## The trend shows that there is indeed a correlation between the length of the
+##  word and its frequently. The more frequent the word is, the shorter it is.
 
 
 # e) Compute the Pearson correlation coefficient for the two variables by means 
@@ -72,10 +88,14 @@ options(warn = warn_level)
 # It is scaled between 1 (for a perfect positive correlation) to -1 (for a perfect 
 # negative correlation).
 
+cor(data$Length, data$Frequency, method = "pearson")
+
 
 # f) Does the correlation coefficient suggest a small, medium or large effect?
 # What about the direction of the effect?
 
+## The coefficient suggests a medium effect if we call effects close to 
+##  (-0.5, 0.5) medium. Coefficient also shows the negative direction of the effect.
 
 
 # g) Note that we have a large number of tied ranks in word length data 
@@ -84,6 +104,13 @@ options(warn = warn_level)
 # Kendall's tau instead of the Pearson correlation coefficient (which is the default).
 # How do you interpret the difference between these 2 correlation coefficients?
 
+cor(data$Length, data$Frequency, method = "kendall")
+
+## The Kendall's method considers the consistency and similarity of the data,
+##  giving the results closer to the truth. 
+## Therefore, a more precise value was obtained. Compared to the Pearson result,
+##  it shows that the degree of correlation is more than 20% weaker compared
+##  to the initial measurement.
 
 
 # h) What about significance? Use the more user-friendly cor.test()!
@@ -124,6 +151,17 @@ options(warn = warn_level)
 # a) Try this again for another example:
 # Let's go back to our digsym data set.
 # Set your wd and load the data frame digsym_clean.csv and store it in a variable. 
+
+getwd()
+
+## By default, the working directory is set to where the R file was opened.
+## If digsym_clean.csv is not in the current folder, it is uncertain where to
+##  search for it.
+## Therefore, it's uncertain what value of the working directory the exercise wants.
+## A search of csv files around the current working directory could be done,
+##  but probably it's not the purpose of this exercise.
+
+digsym <- read.csv(file = "digsym_clean.csv")
 
 
 # b) Suppose you want to predict reaction times in the digit symbol task by 
