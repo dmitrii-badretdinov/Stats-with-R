@@ -106,19 +106,26 @@ cor(data$Length, data$Frequency, method = "pearson")
 
 cor(data$Length, data$Frequency, method = "kendall")
 
-## The Kendall's method considers the consistency and similarity of the data,
-##  giving the results closer to the truth. 
-## Therefore, a more precise value was obtained. Compared to the Pearson result,
-##  it shows that the degree of correlation is more than 20% weaker compared
-##  to the initial measurement.
+## The Kendall's method considers the order of data features.
+## As the current data has many features with similar ranks, a more precise value was obtained. 
+## Compared to the Pearson result, it shows that the degree of correlation 
+## is 20% weaker compared to the initial measurement.
 
 
 # h) What about significance? Use the more user-friendly cor.test()!
 # Take a look at the output and describe what's in there.
 # What do you conclude?
 
+cor.test(data$Length, data$Frequency, method = "kendall")
+
+## The p-value shows that the correlation exists as the probability of it not
+##  existing is 0.00009. 
+## The function also showed the results of the Kendall correlation method.
+
 
 # i) Finally, also calculate Spearman's rank correlation for the same data.
+
+cor(data$Length, data$Frequency, method = "spearman")
 
 
 #######################
@@ -130,17 +137,30 @@ cor(data$Length, data$Frequency, method = "kendall")
 # General form: 
 # "modelname <- lm(outcome ~ predictor, data = dataFrame, na.action = an action)"
 
+linear_regression_model <- lm(data$Frequency ~ data$Length, data = data, na.action = na.exclude)
 
 
 # b) How do you interpret the output? Is the relationship between the two variables 
 # positive or negative?
 # Plot the data points and the regression line.
 
+## Y = b1 + b2 * X. b1 = 6.5; b2 = -0.294;
+## The relationship is negative. Essentially, the regression line from the model
+##  repeats the general trend of the data that was previously seen on the graph.
+
+ggplot(data, aes(Frequency, Length)) +
+  geom_point() +
+  geom_abline(slope = linear_regression_model$coefficients[["data$Length"]], 
+              intercept = linear_regression_model$coefficients[["(Intercept)"]])
 
 # c) Run the plotting command again and have R display the actual words that belong 
 # to each point. 
 # (Don't worry about readability of overlapping words.)
 
+ggplot(data, aes(Frequency, Length)) +
+  geom_text(aes(label = Word)) +
+  geom_abline(slope = linear_regression_model$coefficients[["data$Length"]], 
+              intercept = linear_regression_model$coefficients[["(Intercept)"]])
 
 
 #######################
