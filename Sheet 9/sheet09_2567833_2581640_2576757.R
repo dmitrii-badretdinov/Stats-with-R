@@ -16,17 +16,35 @@
 
 
 ## Please write below your (and your teammates) name, matriculation number. 
-## Name:
-## Matriculation number:
+## Name: Farzaneh Khojasteh
+## Matriculation number: 2567833
+## Name: Meghana Srinath
+## Matriculation number: 2581640
+## Name: Dmitrii Badretdinov
+## Matriculation number: 2576757
 
 ## Change the name of the file by adding your matriculation numbers
 ## (exercise0N_firstID_secondID_thirdID.R)
 
 ###########################################################################################
 ###########################################################################################
-library(lme4)
-library(lattice)
-library(Matrix)
+
+# Changed library to require so it doesn't give an error if a package if missing.
+
+package_list <- c("lme4", "lattice", "Matrix")
+warn_level <- getOption("warn")
+options(warn = -1)
+
+for (val in package_list)
+{
+  if(!require(val, character.only = TRUE))
+  {
+    install.packages(val)
+    library(val, character.only = TRUE)
+  }
+}
+
+options(warn = warn_level)
 
 # a)There are 3 datasets on moodle, you can choose one of them to work with on this
 #   assignment.  
