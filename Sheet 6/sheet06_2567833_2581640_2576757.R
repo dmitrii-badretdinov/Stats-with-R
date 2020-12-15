@@ -105,8 +105,8 @@ ggplot(data, aes(x = period, y = speed, fill = warning)) +
 ##  quartiles, and means are higher when there's no warning sign.
 ##
 ## The mean takes a noticeable dip right after the erection of the sign,
-##  but returns to the values before erecting the sign after some time and even
-##  exceeds them.
+##  but returns to the value that was before erecting the sign after some time 
+##  and even exceeds it.
 
 
 # f) What are your ideas about why the data with warning==2 (sites where no sign was 
