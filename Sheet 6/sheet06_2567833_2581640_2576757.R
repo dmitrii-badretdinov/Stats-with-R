@@ -63,13 +63,30 @@ options(warn = warn_level)
 # a) For the further reference please use ?amis. 
 # It may take some time to understand the dataset. 
 
+?amis
+
 
 # b) Load the dataset, store it into a variable called "data", and briefly inspect it. 
 # Feel free to make some plots and calculate some statistics in order to understand 
 # the data.
 
+data <- amis
 
-# c) All our columns have numeric type. Convert the categorial columns to factors.
+ggplot(data, aes(x = speed)) +
+  geom_bar()
+
+ggplot(data, aes(x = speed)) +
+  geom_histogram(bins = 40)
+
+ggplot(data, aes(x = period, y = speed, group = period)) +
+  geom_boxplot()
+
+
+# c) All our columns have numeric type. Convert the categorical columns to factors.
+
+data$period <- as.factor(data$period)
+data$warning <- as.factor(data$warning)
+data$pair <- as.factor(data$pair)
 
 
 # d) Plot boxplots for the distribution of `speed` for each of the `period` values 
@@ -77,14 +94,26 @@ options(warn = warn_level)
 # boxplots) side by side depending on the `warning` variable.
 # (For all plots here and below please use ggplot)
 
+ggplot(data, aes(x = period, y = speed, fill = warning)) +
+  geom_boxplot(position = "dodge")
+
 
 # e) What can you conclude looking at the plots? What can you say about people's 
 # behaviour in different periods: before, immediately after and after some time?
 
+## Compared to the road with a warning sign, it's visible that whiskers, 
+##  quartiles, and means are higher when there's no warning sign.
+##
+## The mean takes a noticeable dip right after the erection of the sign,
+##  but returns to the values before erecting the sign after some time and even
+##  exceeds them.
 
 
 # f) What are your ideas about why the data with warning==2 (sites where no sign was 
 # erected) was collected?
+
+## Likely it was collected to serve as a control group: to assess the volatility
+## of the parameters on the road that was not affected by the signs.
 
 
 #######################
@@ -98,9 +127,14 @@ options(warn = warn_level)
 # to average "speed" over each "pair" and "period". 
 # Assign this new data frame to the variable casted_data.
 
+casted_data <- cast(data[data$warning == 1,], period+pair~., fun.aggregate = mean, value = "speed", na.rm = T)
 
 
 # b) Build boxplots of the average speed depending on "period".
+
+## TODO: the following command gives an error. Don't know why yet.
+ggplot(casted_data, aes(x = period, y = '(all)', group = period)) +
+  geom_boxplot()
 
 
 # c) Looking at the boxplots, is there a difference between the periods?
@@ -134,7 +168,7 @@ options(warn = warn_level)
 
 # h) what were the degrees of freedom from the result in part g)
 
-# i) Calcuate the effect size and interpret the results. 
+# i) Calculate the effect size and interpret the results. 
 
 # j) Please do pairwise t-tests of the same variables as in g) using pairwise.t.test().
 
@@ -153,12 +187,13 @@ options(warn = warn_level)
 #######################
 ### Exercise 3: 2-way ANOVA
 #######################
-# a) Now we want to analyze the influence of 2 categorial variables 
+# a) Now we want to analyze the influence of 2 categorical variables 
 # (period and warning) on the speed.
 # So let's turn back to our initial dataset amis (not its subset with warning==1).
 # First, we need to average the speed over each `pair`, `warning` and `period
-# Cast your data again and assign the resuts to casted_data2.
+# Cast your data again and assign the results to casted_data2.
 
+casted_data2 <- cast(data, period+warning+pair~., fun.aggregate = mean, value = "speed", na.rm = T)
 
 
 # b) Calculate the mean for each of the 6 possible pairs of `period` and `warning`.
@@ -167,7 +202,7 @@ options(warn = warn_level)
 # c) Do you think there is a significant difference between some of the groups?
 
 
-# d) State the main difference between the applicabilty of 1-way and 2-way ANOVA.
+# d) State the main difference between the applicability of 1-way and 2-way ANOVA.
 
 # e) Now apply the 2-way ANOVA: please use the function aov() on the speed depending 
 # on the period and warning.
