@@ -190,33 +190,51 @@ digsym <- read.csv(file = "digsym_clean.csv")
 # correct_RT_2.5sd (outcome variable) and Age (predictor variable).
 # General form: 
 # "modelname <- lm(outcome ~ predictor, data = dataFrame, na.action = an action)"
-  
+
 # But first we need to cast the data to compute an RT mean (use correct_RT_2.5sd) 
 # for each subject, so that we have only one Age observation per Subject.
 # Store the result in a new dataframe called "cast".
 # In case you're wondering why we still have to do this - like the t-test, 
 # linear regression assumes independence of observations.
 # In other words, one row should correspond to one subject or item only.
+cast <- cast(digsym, Subject+Age~., fun.aggregate = mean, value = "correct_RT_2.5sd", na.rm = T)
+colnames(cast)[3] <- "correct_RT_2.5sd"
 
 
 # c) Now fit the regression model.
-  
+digsym_mod <- lm(correct_RT_2.5sd ~ Age, data = cast)
+
 
 # d) Let's go over the output - what's in there?
 # How do you interpret the output?
-  
+print(digsym_mod)
+summary(digsym_mod)
+# Slope: The coefficient associated with age is quite large 
+# showing that for increase in age increases the response time. 
+# For every year increase in age, response improves by 21.22.
+# Intercept: Response time for age 0 is 637.93
+
 
 # e) Plot the data points and the regression line.
+plot1 <- ggplot(data = cast, aes(x = Age, y = correct_RT_2.5sd)) +     
+          geom_point() + geom_smooth(method = "lm", se = FALSE)
+plot1
 
 
 # f) Plot a histogram and qq-plot of the residuals. 
 # Does their distribution look like a normal distribution?
+hist(resid(digsym_mod))
 
+qqnorm(resid(digsym_mod), pch = 1, frame = FALSE)
+qqline(resid(digsym_mod), col = "steelblue", lwd = 2)
+#It is not normal distribution. It is positively skewed.
 
 
 # g) Plot Cook's distance for the regression model from c) which estimates the 
 # residuals (i.e. distance between the actual values and the  predicted value on 
 # the regression line) for individual data points in the model.
+cooksd <- cooks.distance(digsym_mod)  
+plot(cooksd)
 
 
 # h) Judging from the plot in g) it actually looks like we have 1 influential 
@@ -229,27 +247,55 @@ digsym <- read.csv(file = "digsym_clean.csv")
 # What is the problem with observation 37?
 # Run the plotting command again and have R display the subjects that belong to 
 # each point.
+plot(cooksd)
+text(x=1:length(cooksd)+1, y=cooksd, labels = cast$Subject)
+#text(x=1:length(cooksd)+1, y=cooksd, labels = model.frame(digsym_mod)$Age)
+#to check that corresponding age matched
+#observation 37 belongs to subject 40 and age 45 and 
+#in the dataset, the average general age considered seems to be 20-35 years 
+#this is the only data point that is very different with such a high age.
 
 
 # i) Make a subset of "cast" by excluding the influential subject and name it cast2.
+cast2 <- cast[-37, ] 
+#influential <- as.numeric(names(cooksd)[(cooksd > 0.6)]) #alternate method but gives same result
+#cast2_f <- cast[-influential, ]
 
 # j) Fit the model from c) again, using cast2, and take a good look at the output.
+digsym_mod2 <- lm(correct_RT_2.5sd ~ Age, data = cast2)
+
 
 # k) What's different about the output?
 # How does that change your interpretation of whether age is predictive of RTs?
+print(digsym_mod2)
+#The slope changes drastically from 11.98 to 21.22, with the removal of just one higher age value
+#Since the range of age values is quite low, the regression does not seem good for extrapolation
+#This shows that no definitive interpretation of whether age is predictive of RTs can be drawn
 
 
 # l) Plot the regression line again - notice the difference in slope in 
 # comparison to our earlier model fit?
+plot2 <- ggplot(data = cast2, aes(x = Age, y = correct_RT_2.5sd)) +     
+  geom_point() + geom_smooth(method = "lm", se = FALSE)
+plot2
 
 
 # m) Display the two plots side by side to better see what's going on.
+ggarrange(plot1,plot2)
 
 
 # n) Compute the proportion of variance in RT that can be accounted for by Age.
 # In other words: Compute R Squared.
 # Take a look at the Navarro book (Chapter on regression) if you have trouble 
 # doing this.
+Y.pred <- 11.98*cast2$Age + 862.05
+SS.resid <- sum( (cast2$correct_RT_2.5sd - Y.pred)^2 )
+SS.tot <- sum((cast2$correct_RT_2.5sd - mean(cast2$correct_RT_2.5sd))^2)
+R.squared <- 1 - (SS.resid / SS.tot)
+print(R.squared)
+summary(digsym_mod2)#Multiple R-squared also gives the same value
 
 # o) How do you interpret R Squared?
+#R squared = 0.035(approx) means that the Age (predictor) explains 3.5%
+#of the variance in the Response time (outcome).
 
