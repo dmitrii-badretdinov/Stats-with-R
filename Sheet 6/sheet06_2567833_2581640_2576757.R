@@ -13,8 +13,12 @@
 ## the assignment graded as complete. 
 
 ## Please write below your (and your teammates) name, matriculation number. 
-## Name: 
-## Matriculation number: 
+## Name: Farzaneh Khojasteh
+## Matriculation number: 2567833
+## Name: Meghana Srinath
+## Matriculation number: 2581640
+## Name: Dmitrii Badretdinov
+## Matriculation number: 2576757 
 
 ## Change the name of the file by adding your matriculation numbers
 ## (exercise0N_firstID_secondID_thirdID.R)
@@ -27,9 +31,20 @@
 ### Exercise 1: Preparation
 #######################
 
-library(boot)
-library(ggplot2)
-library(reshape)
+package_list <- c("boot", "ggplot2", "reshape")
+warn_level <- getOption("warn")
+options(warn = -1)
+
+for (val in package_list)
+{
+  if(!require(val, character.only = TRUE))
+  {
+    install.packages(val)
+    library(val, character.only = TRUE)
+  }
+}
+
+options(warn = warn_level)
 
 # This time we will be working with the "amis" data frame (package 'boot') that has 
 # 8437 rows and 4 columns.
