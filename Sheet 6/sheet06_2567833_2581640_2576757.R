@@ -132,13 +132,15 @@ casted_data <- cast(data[data$warning == 1,], period+pair~., fun.aggregate = mea
 
 # b) Build boxplots of the average speed depending on "period".
 
-## TODO: the following command gives an error. Don't know why yet.
-ggplot(casted_data, aes(x = period, y = '(all)', group = period)) +
+ggplot(casted_data, aes(x = period, y = casted_data$'(all)')) +
   geom_boxplot()
-
 
 # c) Looking at the boxplots, is there a difference between the periods?
 
+## There is a visible difference between the periods.
+## If we were to consider this plot without any prior information, 
+##  it could be said that the sign had effect right after installation
+##  but the situation has become even worse than without sign after some time.
 
 
 # Now, let's check the ANOVA assumptions and whether they are violated or not 
@@ -165,8 +167,18 @@ ggplot(casted_data, aes(x = period, y = '(all)', group = period)) +
 # g) Now we are ready to perform 1-way ANOVA: please use the function aov() on the 
 # speed depending on the period, report p-value and interpret the result in details.
 
+(aov_test <- aov(casted_data$`(all)` ~ casted_data$period, casted_data))
+summary(aov_test)
 
-# h) what were the degrees of freedom from the result in part g)
+## The p-value equals 0.382.
+## As the p-value is higher than 0.05, the test states that there is no significant
+##  difference between the groups.
+
+
+# h) What were the degrees of freedom from the result in part g)
+
+## The degrees of freedom were 2 for period and 39 for the residuals.
+
 
 # i) Calculate the effect size and interpret the results. 
 
