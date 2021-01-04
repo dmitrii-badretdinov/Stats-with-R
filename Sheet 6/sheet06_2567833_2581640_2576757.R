@@ -209,10 +209,12 @@ casted_data2 <- cast(data, period+warning+pair~., fun.aggregate = mean, value = 
 
 
 # b) Calculate the mean for each of the 6 possible pairs of `period` and `warning`.
-
+pair_mean <- aggregate(AverageSpeed ~ period + warning, casted_data2, mean)
+pair_mean
 
 # c) Do you think there is a significant difference between some of the groups?
-
+#Second element of each pair is greater then first element. i.e. P1: W1 = AvgSpeed (36.51000) < P1:W2 = AvgSpeed (38.21857)
+#There is no significant difference between some of the groups
 
 # d) State the main difference between the applicability of 1-way and 2-way ANOVA.
 
