@@ -222,6 +222,10 @@ pair_mean
 # e) Now apply the 2-way ANOVA: please use the function aov() on the speed depending 
 # on the period and warning.
 # Report the p-value and interpret the result in detail. Properly formulate the findings!
+AOV2way<-aov(casted_data$avg_speed~casted_data2$period+casted_data2$warning,casted_data2)
+summary(AOV2way)
+#p value of period=0.32910>0.05, period is not significant
+#p value of warning=0.00453<0.05, warning is significant
 
 
 # f) What do you conclude about the behaviour of drivers based on the 2-way ANOVA?
