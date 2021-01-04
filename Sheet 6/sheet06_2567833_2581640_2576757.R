@@ -226,7 +226,16 @@ AOV2way<-aov(casted_data$avg_speed~casted_data2$period+casted_data2$warning,cast
 summary(AOV2way)
 #p value of period=0.32910>0.05, period is not significant
 #p value of warning=0.00453<0.05, warning is significant
-
+#just for warning
+summary(aov(casted_data2$avg_speed~casted_data2$warning,casted_data2))
+#pvalue=0.00456<0.05,warning is significant
+#just for period
+summary(aov(casted_data2$avg_speed~casted_data2$period,casted_data2))
+#pvalue=0.361>0.05,period is not significant
+#The Fvalue of warning for model of just warning (8.506) and model of period+warning is higher than Fvalue of period for just period model(1.031) as well as 
+#period+warning model(1.127). The variance(mean squared 122.81) that warning factor explains is higher than viariance (16.22) that period explains in model of both
+#factors.There are more residuals left in period model(15.73). We do not consider the effect of warning therefore alot of variance is left that we did not explain
 
 # f) What do you conclude about the behaviour of drivers based on the 2-way ANOVA?
-
+#presence of warning sign has an important role and affects on drivers speed, however, the period of time to read the warning sign does not have an effect
+#on drivers to chnge the speed.
