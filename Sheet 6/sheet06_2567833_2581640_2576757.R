@@ -128,19 +128,19 @@ ggplot(data, aes(x = period, y = speed, fill = warning)) +
 # Assign this new data frame to the variable casted_data.
 
 casted_data <- cast(data[data$warning == 1,], period+pair~., fun.aggregate = mean, value = "speed", na.rm = T)
-
+colnames(casted_data)[3] <- "speed"
 
 # b) Build boxplots of the average speed depending on "period".
 
-ggplot(casted_data, aes(x = period, y = casted_data$'(all)')) +
+ggplot(casted_data, aes(x = period, y = speed)) +
   geom_boxplot()
 
 # c) Looking at the boxplots, is there a difference between the periods?
 
 ## There is a visible difference between the periods.
 ## If we were to consider this plot without any prior information, 
-##  it could be said that the sign had effect right after installation
-##  but the situation has become even worse than without sign after some time.
+## it could be said that the sign had effect right after installation
+## but the situation has become even worse than without sign after some time.
 
 
 # Now, let's check the ANOVA assumptions and whether they are violated or not 
@@ -149,25 +149,34 @@ ggplot(casted_data, aes(x = period, y = casted_data$'(all)')) +
 # d) Independence assumption
 # (Figure out the best way to check this assumption and give a detailed justified 
 # answer to whether it is violated or not.)
-
+# From the data given, we can see that the values are not repeated and generated separately
+# Based on data collection, it seems to be independent
 
 
 # e) Normality of residuals
 # (Figure out the best way to check this assumption and give a detailed justified 
 # answer to whether it is violated or not.)
-
+hist(casted_data$speed)
+shapiro.test(casted_data$speed)
+# pvalue is higher than 0.05. Hence it is normal.
+# qqnorm(aov_test$residuals)
+# qqline(aov_test$residuals) can also be used
 
 
 # f) Homogeneity of variance of residuals
 # (Figure out the best way to check this assumption and give a detailed justified 
 # answer to whether it is violated or not.)
-
+bartlett.test(speed ~ period, data = casted_data)
+#p-value is 0.7134, which is greater than significance level of 0.05
+#this means that the null hypothesis: all populations variances are equal cannot be rejected
+#the variance can be homogeneous.
+fligner.test(speed ~ period, data = casted_data)
+#p-value is 0,8062. Alternate test which also gave same results
 
 
 # g) Now we are ready to perform 1-way ANOVA: please use the function aov() on the 
 # speed depending on the period, report p-value and interpret the result in details.
-
-(aov_test <- aov(casted_data$`(all)` ~ casted_data$period, casted_data))
+(aov_test <- aov(speed ~ period, data = casted_data))
 summary(aov_test)
 
 ## The p-value equals 0.382.
@@ -176,25 +185,36 @@ summary(aov_test)
 
 
 # h) What were the degrees of freedom from the result in part g)
-
 ## The degrees of freedom were 2 for period and 39 for the residuals.
 
 
-# i) Calculate the effect size and interpret the results. 
+# i) Calculate the effect size and interpret the results.
+library(lsr)
+etaSquared(aov_test,anova = TRUE)
+#eta.sq value is 0.0481. i.e 4.81% variance is explained by the factor
 
 # j) Please do pairwise t-tests of the same variables as in g) using pairwise.t.test().
+pairwise.t.test(casted_data$speed, casted_data$period, p.adj = "none")
 
 
 # k) Report the pairwise p-values and interpret the result in detail.
+#The values are 0.59(1 vs 2), 0.40(1 vs 3) and 0.17(2 vs 3). All these values are higher than threshold of 0.05
 
 
 # l) Try to use no adjustment for pairwise testing and then the Bonferroni correction.
 # Does the result change? 
+pairwise.t.test(casted_data$speed, casted_data$period, p.adj = "bonf")
+#There is a significant change in the values. The p-values are much higher.
+#1 for (1 vs 2), 1 for (1 vs 3) and 0.51 for (2 vs 3)
+
 
 # m) If the results change why do they? What does Bonferroni correction do?
+# Bonferroni correction tries to eliminate type 1 error that occurs since same data is used
+# for multiple comparisons.
 
 
 # n) If the assumption of Normality does not hold, which test would you be using in this scenario.
+#non-parametric methods can be used such as Kruskal Wallis test
 
 #######################
 ### Exercise 3: 2-way ANOVA
