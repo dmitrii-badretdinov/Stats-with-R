@@ -217,7 +217,8 @@ pair_mean
 #There is no significant difference between some of the groups
 
 # d) State the main difference between the applicability of 1-way and 2-way ANOVA.
-
+#one way ANOVA: when we have one factor with two levels. we need to compute 1 effect. On the other side
+#when we have two factors with two levels we use two-way ANOVA.We should compute two main effects and there might be an interract of two factors
 # e) Now apply the 2-way ANOVA: please use the function aov() on the speed depending 
 # on the period and warning.
 # Report the p-value and interpret the result in detail. Properly formulate the findings!
