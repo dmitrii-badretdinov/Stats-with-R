@@ -42,6 +42,14 @@
 #    mom_hs indicates whether the mother has a high school degree
 #    1 = high school education, 0 = no high school degree.
 
+if(!require(ggplot2))
+{
+  install.packages(ggplot2)
+  library(ggplot2)
+}
+
+kidiq = read.csv("kidiq.txt", TRUE, ' ')
+str(data)
 
 
 # b) Plot kid_score against mom_iq in a scatter plot, and add a regression line 
@@ -49,17 +57,46 @@
 #    variable) to the plot. 
 #    Name the plot and the axis in sensible ways.
 
+ggplot(kidiq, aes(x = mom_iq, y = kid_score)) +
+  geom_point() +
+  xlab("Mom's IQ") +
+  ylab("Child's IQ")
 
 
-# c) State the main difference between correlation and regression .Calculate a simple regression model 
-#for kid_score with mom_hs as a predictor and interpret the results.
+# c) State the main difference between correlation and regression. Calculate a simple regression model 
+#    for kid_score with mom_hs as a predictor and interpret the results.
 
+## Essentially, correlation cannot explain the cause and effect.
+## If two features correlate, the relationship between the features remains unknown:
+## it is still undefined which feature influences the other one.
 
+model_kid_momHs = lm(kid_score ~ mom_hs, kidiq)
+print(model_kid_momHs)
+
+## Intercept: 77.55
+## mom_hs: 11.77
+## kid_score = 77.55 + 11.77 * mom_hs;
+##
+## The linear model predicts that if the mother has a high school degree,
+## the IQ of their kid would be higher by roughly 12 points.
 
 # d) Next, fit a regression model with two predictors: mom_hs and mom_iq. 
 #    Interpret the model 
 #    Then compare this regression model to the previous model and state which has a better model fit.
 
+model_kid_momHs_momIq = lm(kid_score ~ mom_hs + mom_iq, kidiq)
+print(model_kid_momHs_momIq)
+
+## Intercept: 25.73
+## mom_hs: 5.95       
+## mom_iq: 0.56
+## kid_score = 25.73 + 5.95 * mom_hs + 0.56 * mom_iq;
+##
+## The second model is a better fit due to considering more information.
+## The first linear model had one binary feature as a predictor, therefore was
+##  unable to give any precise results.
+## The second model includes a numerical feature as a predictor, therefore it has
+##  significantly more data to calibrate the prediction.
 
 # e) Now plot a model where both predictors are shown. Do this by plotting 
 #    data points for mothers with high school degree==1 in one color and those 
