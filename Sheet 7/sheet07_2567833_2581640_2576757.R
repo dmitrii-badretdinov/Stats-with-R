@@ -58,6 +58,7 @@ str(data)
 #    Name the plot and the axis in sensible ways.
 
 ggplot(kidiq, aes(x = mom_iq, y = kid_score)) +
+  geom_smooth(method="lm") +
   geom_point() +
   xlab("Mom's IQ") +
   ylab("Child's IQ")
@@ -106,15 +107,38 @@ print(model_kid_momHs_momIq)
 #    and then plot them along with the original data points:
 #    pred = data.frame(mom_iq=kidiq$mom_iq, mom_hs=kidiq$mom_hs, 
 #    kid_score_pred=fitted(your_model))
-
+pred = data.frame(mom_iq=kidiq$mom_iq, mom_hs=kidiq$mom_hs, kid_score_pred=fitted(model_kid_momHs_momIq))
+ggplot(kidiq, aes(x = mom_iq, y = kid_score, color = as.factor(mom_hs))) +
+  geom_line(data = pred, aes(x = mom_iq, y = kid_score_pred)) +
+  geom_point() +
+  xlab("Mom's IQ") +
+  ylab("Child's IQ")
 
 
 # f) Next, we will proceed to a model including an interaction between mom_hs
 #    and mom_iq. Fit the model and interpret your results.
-
+#model_momHs_momIq_inter = lm(kid_score ~ mom_hs + mom_iq + mom_hs:mom_iq, kidiq) can also be used
+model_momHs_momIq_inter = lm(kid_score ~ mom_hs*mom_iq, kidiq)
+print(model_momHs_momIq_inter)
+## Intercept: -11.482
+## co-efficients:
+## mom_hs: 51.2682       
+## mom_iq: 0.9689
+## mom_hs*mom_iq: -0.4843 
+## kid_score =-11.482 + 51.2682 * mom_hs + 0.9689 * mom_iq + -0.4843 * mom_hs*mom_iq;
+# The coefficient values increase for each showing that they are good predictor variables
+# There is a significant interaction between the variables mom_hs and mom_iq
+# This model is a better fit as it includes all the necessary information to draw conclusion.
 
 
 # g) Next, let's plot the results of this model.
+pred_inter = data.frame(mom_iq=kidiq$mom_iq, mom_hs=kidiq$mom_hs, kid_score_pred=fitted(model_momHs_momIq_inter))
+
+ggplot(kidiq, aes(x = mom_iq, y = kid_score, color = as.factor(mom_hs))) +
+  geom_line(data = pred_inter, aes(x = mom_iq, y = kid_score_pred)) +
+  geom_point() +
+  xlab("Mom's IQ") +
+  ylab("Child's IQ")
 
 
 
