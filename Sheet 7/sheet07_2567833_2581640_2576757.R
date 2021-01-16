@@ -149,6 +149,8 @@ ggplot(kidiq, aes(x = mom_iq, y = kid_score, color = as.factor(mom_hs))) +
 #    Please specify the predict function to also give you the 0.95 confidence 
 #    interval.
 
+mini_frame <- data.frame("mom_hs" = as.integer(1), "mom_iq" = 100)
+predict(model_momHs_momIq_inter, newdata = mini_frame, interval = "confidence")
 
 
 # i) Meaning of confidence intervals for regression line.
@@ -156,9 +158,23 @@ ggplot(kidiq, aes(x = mom_iq, y = kid_score, color = as.factor(mom_hs))) +
 #    regression line. By default, there should also be displayed the borders of 
 #    the confidence interval. What is the meaning of this confidence interval?
 
+ggplot(kidiq, aes(x = mom_iq, y = kid_score)) +
+  geom_smooth(method="lm") +
+  geom_point() +
+  xlab("Mom's IQ") +
+  ylab("Child's IQ")
+
+## The visible confidence interval shows the range in which the result may vary.
+## The variation depends on the coefficients, therefore it's wider at the line's ends.
+## To be specific, the interval shows the 95% confidence range, meaning that
+##  the model predicts the mean to be within the shown range with the 95% confidence.
 
 
 # j) Finally, do model checking on your model from f), i.e. inspect 
 #    the standard model plots provided by R, and interpret what you see.
 
+plot(model_momHs_momIq_inter)
 
+## The model is non-linear.
+## With the ability to consider interaction, we likely can enjoy more precise predictions.
+## For the presented case and the interaction, the model is not overfit.
