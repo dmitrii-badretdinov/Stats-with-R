@@ -132,13 +132,67 @@ print(xyplot(Reaction ~ Days | Subject, sleepstudy, aspect = "xy",
 #    Your task is to figure out how to adapt this plot for our data. What do you 
 #    conclude regarding the reading sentences experiment?
 
+##
+length(unique(dat_sanity_checked$PARTICIPANT))
+
+print(xyplot(WORD_TIME ~ RELWDINDEX | PARTICIPANT, dat_sanity_checked, aspect = "xy",
+             layout = c(8,3), type = c("g", "p", "r"),
+             index.cond = function(x,y) coef(lm(y ~ x))[1],
+             xlab = "Word's position in a sentence",
+             ylab = "Reading speed"))
+
+print(xyplot(WORD_TIME ~ ITEM_TYPE | PARTICIPANT, dat_sanity_checked, aspect = "xy",
+             layout = c(24,1), type = c("g", "p", "r"),
+             index.cond = function(x,y) coef(lm(y ~ x))[1],
+             xlab = "Word type",
+             ylab = "Reading speed"))
+
+## As we can see on the graphs, the slopes of a linear model vary significantly.
+## For some participants, the slope is zero when for some others it has either
+##  visibly positive or negative value.
+##
+## Based on this observation, I'd conclude that the reading speed is noticeably
+##  person-dependent.
+
+
 # f)  Explain the main need for switching to Linear mixed effect model for the study.
 #     In addition, report what could be the fixed and random effect structure.
+
+## We need to use the Linear mixed effect model because the measurements are not
+##  independent: we take measurements on several items from the same subjects.
+## Fixed effects are constant across individuals. Random effects aren't.
+## The slopes of WORD_TIME ~ RELWDINDEX | PARTICIPANT and WORD_TIME ~ ITEM_TYPE | PARTICIPANT
+##  vary significantly. Therefore, they cannot be the fixed effects.
+## A fixed effect would be something that had the same slope for all participants.
+
 
 # g) Experiment with calculating a linear mixed effects model for this study, 
 #    and draw the appropriate conclusions 
 
-# h} Describe how would you report and write up the analysis giving a detailed explanation for each model 
+model = lmer(WORD_TIME ~ ITEM_TYPE + (ITEM_TYPE|PARTICIPANT), dat_sanity_checked)
+print(dotplot(ranef(model,condVar=TRUE),  scales = list(x = list(relation = 'free')))
+      [["PARTICIPANT"]])
+
+model = lmer(WORD_TIME ~ ITEM_TYPE + (RELWDINDEX|PARTICIPANT), dat_sanity_checked)
+print(dotplot(ranef(model,condVar=TRUE),  scales = list(x = list(relation = 'free')))
+      [["PARTICIPANT"]])
+
+## Based on the graphs, we can see that the dependence ITEM_TYPE and RELWDINDEX to
+##  PARTICIPANT is not of a linear nature.
+
+# h) Describe how you would report and write up the analysis giving a detailed explanation for each model 
+
+## I would report the analysis starting from the general overview of the data and graphs given in b).
+## Then, I would introduce the dependence of the features on the participants and that it brakes
+##  the default assumption of the feature independence.
+## With that said, I would introduce the mixed effects linear model and how it handles the broken
+##  assumption.
+## After presenting the plots of ITEM_TYPE|PARTICIPANT and RELWDINDEX|PARTICIPANT,
+##  I would clarify that the slope heavily depends on the participant with most
+##  of the slopes being RELWDINDEX positive and ITEM_TYPE being negative.
+## Overall, I'd conclude that the results are heavily person-dependent, and no
+##  overarching trend could be drawn on such a small number of participants.
+
 
 # i) Let's get back to the dataset 'sleepstudy'. The following plot shows 
 #    subject-specific intercepts and slopes. Adapt this plot for our study 
@@ -147,4 +201,12 @@ print(xyplot(Reaction ~ Days | Subject, sleepstudy, aspect = "xy",
 model = lmer(Reaction ~ Days + (Days|Subject), sleepstudy)
 print(dotplot(ranef(model,condVar=TRUE),  scales = list(x = list(relation = 'free')))
       [["Subject"]])
+
+##
+model = lmer(WORD_TIME ~ ITEM_TYPE + (ITEM_TYPE|PARTICIPANT), dat_sanity_checked)
+print(dotplot(ranef(model,condVar=TRUE),  scales = list(x = list(relation = 'free')))
+      [["PARTICIPANT"]])
+
+## As described in h), the following graph shows the dependence between ITEM_TYPE
+##  and PARTICIPANT. The information about it was included in h).
 
