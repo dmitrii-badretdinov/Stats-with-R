@@ -72,9 +72,11 @@ unique(dat$ITEM_TYPE)
 dat$ITEM_TYPE = as.factor(dat$ITEM_TYPE)
 
 bwplot(WORD_TIME~ITEM_TYPE, data = dat)
+# The average time to read the word seems almost equal in both item types along with similar distribution
 
 dat_relwdindex0 = subset(dat, RELWDINDEX == 0)
 bwplot(WORD_TIME~ITEM_TYPE, data = dat_relwdindex0)
+# On considering only one relative word in the index, we see a difference in avg word reading times 
 
 
 # c) Decide whether you want to exclude any data points (provide not only the code,
@@ -158,24 +160,39 @@ print(xyplot(WORD_TIME ~ ITEM_TYPE | PARTICIPANT, dat_sanity_checked, aspect = "
 # f)  Explain the main need for switching to Linear mixed effect model for the study.
 #     In addition, report what could be the fixed and random effect structure.
 
-## We need to use the Linear mixed effect model because the measurements are not
-##  independent: we take measurements on several items from the same subjects.
+## The main reason to switch is the data fails to meet the independence assumption that
+## is conditional for normal linear regression.
+## The data is collected for different words from same set of people i.e it is both
+## multiple observations from each subject and multiple observations from each item,
+## hence the observations are likely not independent of each other.
+## Some participants might be good readers while some might be slow generally in that language
+## and hence each have their own reading speed.
+
+## fixed effect: ITEM_TYPE, RELWDINDEX, itemOrder are fixed effect as they are items of limited type
+## random effect: PARTICIPANT and EXPWORD would most likely be the random effect structures 
+## as they are chosen at random and on addition of different person from the population or 
+## a new word from the dictionary will cause a change
+#(The interpretation for fixed and random effect could also be as follows:)
 ## Fixed effects are constant across individuals. Random effects aren't.
 ## The slopes of WORD_TIME ~ RELWDINDEX | PARTICIPANT and WORD_TIME ~ ITEM_TYPE | PARTICIPANT
-##  vary significantly. Therefore, they cannot be the fixed effects.
+## vary significantly. Therefore, they cannot be the fixed effects.
 ## A fixed effect would be something that had the same slope for all participants.
 
 
 # g) Experiment with calculating a linear mixed effects model for this study, 
 #    and draw the appropriate conclusions 
 
-model = lmer(WORD_TIME ~ ITEM_TYPE + (ITEM_TYPE|PARTICIPANT), dat_sanity_checked)
+model_item = lmer(WORD_TIME ~ ITEM_TYPE + (ITEM_TYPE|PARTICIPANT), dat_sanity_checked)
+print(dotplot(ranef(model,condVar=TRUE),  scales = list(x = list(relation = 'free')))
+      [["PARTICIPANT"]])
+model_relw = lmer(WORD_TIME ~ RELWDINDEX + (RELWDINDEX|PARTICIPANT), dat_sanity_checked)
 print(dotplot(ranef(model,condVar=TRUE),  scales = list(x = list(relation = 'free')))
       [["PARTICIPANT"]])
 
-model = lmer(WORD_TIME ~ ITEM_TYPE + (RELWDINDEX|PARTICIPANT), dat_sanity_checked)
+model_all = lmer(WORD_TIME ~ RELWDINDEX + (1|PARTICIPANT) + (1|EXPWORD) + (RELWDINDEX|ITEM_TYPE), dat_sanity_checked)
 print(dotplot(ranef(model,condVar=TRUE),  scales = list(x = list(relation = 'free')))
       [["PARTICIPANT"]])
+coef(model_all)
 
 ## Based on the graphs, we can see that the dependence ITEM_TYPE and RELWDINDEX to
 ##  PARTICIPANT is not of a linear nature.
@@ -192,7 +209,15 @@ print(dotplot(ranef(model,condVar=TRUE),  scales = list(x = list(relation = 'fre
 ##  of the slopes being RELWDINDEX positive and ITEM_TYPE being negative.
 ## Overall, I'd conclude that the results are heavily person-dependent, and no
 ##  overarching trend could be drawn on such a small number of participants.
-
+sessionInfo()
+citation("lme4")
+## We used R core team (2020) and lme4_1.1-23 (Bates D, Mächler M, Bolker B, Walker S (2015))
+## to perform linear mixed effect analysis to understand the relationship between 
+## relative word in the index and the word reading time.
+## For model_item, as fixed effect we used ITEM_TYPE and as random effect, intercept for PARTICIPANT was added.
+## For model_relw, as fixed effect we used RELWDINDEX and as random effect, intercept for PARTICIPANT was added.
+## For model_all, as fixed effect we used RELWDINDEX. As random effect, intercepts for 
+## PARTICIPANT,ITEM_TYPE and EXPWORD was added along with by ITEM_TYPE slope for effect of RELWDINDEX. 
 
 # i) Let's get back to the dataset 'sleepstudy'. The following plot shows 
 #    subject-specific intercepts and slopes. Adapt this plot for our study 
@@ -203,10 +228,11 @@ print(dotplot(ranef(model,condVar=TRUE),  scales = list(x = list(relation = 'fre
       [["Subject"]])
 
 ##
-model = lmer(WORD_TIME ~ ITEM_TYPE + (ITEM_TYPE|PARTICIPANT), dat_sanity_checked)
+model_sentence = lmer(WORD_TIME ~ RELWDINDEX + (RELWDINDEX|ITEM_TYPE), dat_sanity_checked)
 print(dotplot(ranef(model,condVar=TRUE),  scales = list(x = list(relation = 'free')))
       [["PARTICIPANT"]])
 
 ## As described in h), the following graph shows the dependence between ITEM_TYPE
 ##  and PARTICIPANT. The information about it was included in h).
+
 
