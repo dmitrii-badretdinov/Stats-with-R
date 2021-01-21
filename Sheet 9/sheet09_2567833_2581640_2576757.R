@@ -11,8 +11,12 @@
 
 
 ## Please write below your (and your teammates) name, matriculation number. 
-## Name:
-## Matriculation number:
+## Name: Farzaneh Khojasteh
+## Matriculation number: 2567833
+## Name: Meghana Srinath
+## Matriculation number: 2581640
+## Name: Dmitrii Badretdinov
+## Matriculation number: 2576757
 
 ## Change the name of the file by adding your matriculation numbers
 ## (exercise0N_firstID_secondID_thirdID.R)
