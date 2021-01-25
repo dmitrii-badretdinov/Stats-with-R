@@ -75,18 +75,52 @@
 p = read.csv("poisson_sim.csv", sep=";")
 p <- within(p, {
   prog <- factor(prog, levels=1:3, labels=c("General", "Academic", "Vocational"))
-  id <- factor(id)
+  id <- factor(ï..id) #The name of 1st column was loaded diffently hence the correction
+  #id <- factor(id)
 })
 summary(p)
 
+
 #(6) Plot the data to see whether program type and math final exam score seem to affect the number of awards.
+boxplot(num_awards~prog, data = p)
+#program type seems to have some relation on number of awards 
+#as Academic shows to have higher number of awards compared to the other two types
+ggplot(p,aes(x=math, y=num_awards))+
+  geom_smooth(method="lm") +
+  geom_point()
+#there appears to be a trend of increased awards with increase in math score
+
+#merging both we have,
+ggplot(p,aes(x=math, y=num_awards, color=prog))+
+  geom_smooth(method="lm") +
+  geom_point()
 
 #(7) what model family is used and explain the reason for using it.
 #Run a generalized linear model to test for significance of effects.
+hist(p$num_awards)
+# It is positively skewed
+mod_all <- glm(num_awards ~ math * prog, data = p, family = poisson)
+# The predicter variables: math and prog are independent of each other as the data is collected from different students
+# prog variable is categorical and math variable is continuous
+#qqnorm(mod_gaussian$residuals)
+#qqline(mod_gaussian$residuals)
+# residuals are not normally distributed hence it cannot use gaussian
+# hence the most ideal model would be gamma 
+
+mod_math <- lm(num_awards ~ math, data = p)
+mod_prog <- lm(num_awards ~ prog, data = p)
 
 #(8) Do model comparisons to find out whether the predictors significantly improve model fit.
+anova(mod_math,mod_all)
+anova(mod_prog,mod_all)
+AIC(mod_all,mod_math,mod_prog)
+# The 2 predictors do significantly improve the model fit
 
 #(9) Compare to a model that uses a gaussian distribution (normal lm model) for this data.
+mod_gaussian <- lm(num_awards ~ math * prog, data = p)
+anova(mod_gaussian,mod_all)
+AIC(mod_all,mod_gaussian)
+# In this case chosen poisson model seems to suit the data better than normal with lower AIC value of 377.15
 
 ##Task 3
 
