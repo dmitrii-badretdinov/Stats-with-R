@@ -319,3 +319,12 @@ AIC(mod_all,mod_gaussian)
 
 ## Please explain within and between subject experimental design.
 ##How does the design affect the random effect structure during analysis.
+
+# The data collected is essential in understanding and deciding on method to be used for analysis and interpretation
+# Within subject experimental design is when same group of individuals are used in the study for multiple observations
+# or test conditions
+# Between subject experimental design refers to different individuals testing or providing observations
+# so each variable is unique
+
+# The design affects the choice of method as in case of within subject design, 
+# there will be random effects that we need to take into consideration.
